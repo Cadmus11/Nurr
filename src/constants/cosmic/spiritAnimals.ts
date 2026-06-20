@@ -1,0 +1,98 @@
+import type { SpiritAnimal } from '@/types/cosmic';
+
+export const SPIRIT_ANIMALS: SpiritAnimal[] = [
+  {
+    animal: "Wolf",
+    traits: ["Loyal", "Intuitive", "Courageous", "Communal", "Free-spirited"],
+    lifeGuidance: "Trust your instincts and honor your pack. True strength lies in community and loyalty.",
+    strengths: ["Deep intuition and instinct", "Unwavering loyalty to tribe", "Fearless in facing challenges", "Powerful communicator"],
+    spiritualMessage: "You are both a leader and a servant to your pack. Walk your path with courage and remain loyal to those who travel with you.",
+    element: "Earth",
+    direction: "West",
+  },
+  {
+    animal: "Eagle",
+    traits: ["Visionary", "Soaring", "Wise", "Independent", "Perceptive"],
+    lifeGuidance: "Rise above the noise to see the bigger picture. Your unique perspective is your greatest gift.",
+    strengths: ["Exceptional vision and foresight", "Ability to rise above challenges", "Freedom and independence", "Spiritual connection"],
+    spiritualMessage: "You are called to see from a higher perspective. Rise above earthly concerns and trust the broader view only you can see.",
+    element: "Air",
+    direction: "North",
+  },
+  {
+    animal: "Lion",
+    traits: ["Courageous", "Regal", "Protective", "Charismatic", "Powerful"],
+    lifeGuidance: "Step into your power with grace. Lead with courage and protect those who look up to you.",
+    strengths: ["Natural leadership", "Unshakable courage", "Protective instinct", "Commanding presence"],
+    spiritualMessage: "You are the sovereign of your own life. Claim your throne, lead with heart, and protect your pride with fierce love.",
+    element: "Fire",
+    direction: "East",
+  },
+  {
+    animal: "Fox",
+    traits: ["Clever", "Adaptable", "Observant", "Quick-witted", "Strategic"],
+    lifeGuidance: "Use your intelligence and adaptability to navigate any situation. Sometimes the cleverest path is the most effective.",
+    strengths: ["Sharp intellect", "Adaptability to change", "Strategic thinking", "Quick problem-solving"],
+    spiritualMessage: "Wisdom often comes through cunning, not force. Observe carefully, adapt quickly, and trust your cleverness to find the way.",
+    element: "Air",
+    direction: "East",
+  },
+  {
+    animal: "Owl",
+    traits: ["Wise", "Mysterious", "Observant", "Intuitive", "Silent"],
+    lifeGuidance: "Look beneath the surface. The deepest truths are revealed in silence and shadow.",
+    strengths: ["Deep wisdom", "Ability to see in darkness", "Silent observation", "Connection to hidden knowledge"],
+    spiritualMessage: "You are a guardian of ancient wisdom. Trust what you see in the shadows and share your insights only with those ready to receive them.",
+    element: "Air",
+    direction: "North",
+  },
+  {
+    animal: "Bear",
+    traits: ["Strong", "Grounded", "Protective", "Confident", "Introspective"],
+    lifeGuidance: "Stand in your power with quiet confidence. Know when to act and when to hibernate and reflect.",
+    strengths: ["Physical and emotional strength", "Deep grounding", "Fierce protection of loved ones", "Introspective wisdom"],
+    spiritualMessage: "True power is quiet and grounded. Stand tall, protect what is yours, and honor the cycles of rest and action.",
+    element: "Earth",
+    direction: "West",
+  },
+  {
+    animal: "Panther",
+    traits: ["Powerful", "Mysterious", "Agile", "Fearless", "Protective"],
+    lifeGuidance: "Move through the darkness with confidence. Your power lies in your ability to navigate unseen realms.",
+    strengths: ["Grace under pressure", "Fearless exploration of shadows", "Agility in difficult situations", "Protective ferocity"],
+    spiritualMessage: "The darkness is not your enemy — it is your ally. Move through it with grace and reclaim the power you have given away.",
+    element: "Water",
+    direction: "South",
+  },
+  {
+    animal: "Dragon",
+    traits: ["Ancient", "Powerful", "Wise", "Transformative", "Elemental"],
+    lifeGuidance: "Embrace your transformative power. You are here to create, destroy, and recreate on a grand scale.",
+    strengths: ["Immense personal power", "Ability to transform reality", "Ancient wisdom", "Elemental mastery"],
+    spiritualMessage: "You carry the fire of creation and destruction within you. Use your power wisely — you are here to change the world.",
+    element: "Fire",
+    direction: "East",
+  },
+  {
+    animal: "Snake",
+    traits: ["Transformative", "Healing", "Intuitive", "Patient", "Mysterious"],
+    lifeGuidance: "Embrace the cycles of death and rebirth. Shed what no longer serves you and emerge renewed.",
+    strengths: ["Powerful transformation", "Healing energy", "Deep intuition", "Patience and timing"],
+    spiritualMessage: "Your greatest gift is the ability to shed your old skin and be reborn. Trust the process of transformation — it is your path to wholeness.",
+    element: "Water",
+    direction: "South",
+  },
+  {
+    animal: "Raven",
+    traits: ["Intelligent", "Mysterious", "Magical", "Adaptable", "Messenger"],
+    lifeGuidance: "Pay attention to signs and synchronicities. The universe is sending you messages — stay alert.",
+    strengths: ["High intelligence", "Connection to magic", "Adaptability", "Messenger of change"],
+    spiritualMessage: "You are a bridge between worlds. The messages you receive are meant to be shared. Speak your truth and honor the magic of transformation.",
+    element: "Air",
+    direction: "North",
+  },
+];
+
+export function getSpiritAnimalByIndex(index: number): SpiritAnimal {
+  return SPIRIT_ANIMALS[index % SPIRIT_ANIMALS.length];
+}

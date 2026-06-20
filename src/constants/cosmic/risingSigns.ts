@@ -1,0 +1,88 @@
+import type { RisingSignData, ZodiacSign } from '@/types/cosmic';
+
+export const RISING_SIGNS: Record<ZodiacSign, RisingSignData> = {
+  aries: {
+    sign: "aries",
+    firstImpressions: "Bold, energetic, and confident. People notice their presence immediately. They seem ready for action at all times.",
+    socialBehavior: "Direct and competitive in conversation. Natural initiators who lead group activities.",
+    appearanceTraits: ["Athletic build or posture", "Strong eyebrows or jawline", "Active, forward-leaning posture", "Often wears red or bold colors"],
+    publicPersona: "The pioneer — seen as a go-getter, natural leader, and someone who gets things done.",
+  },
+  taurus: {
+    sign: "taurus",
+    firstImpressions: "Grounded, calm, and solid. They exude a quiet strength that makes others feel safe and stable.",
+    socialBehavior: "Reserved at first, warm once comfortable. Speaks deliberately and values genuine connection.",
+    appearanceTraits: ["Strong neck or shoulders", "Expressive eyes", "Deliberate, unhurried movements", "Sense of style leans classic and quality"],
+    publicPersona: "The rock — reliable, trustworthy, and unshakeable. Someone you can count on in a crisis.",
+  },
+  gemini: {
+    sign: "gemini",
+    firstImpressions: "Witty, animated, and mentally quick. Their eyes dart with curiosity and they seem to know a little about everything.",
+    socialBehavior: "Chatty, engaging, and versatile. Flits between conversations with ease. Natural networker.",
+    appearanceTraits: ["Youthful appearance", "Expressive hands while talking", "Alert, curious eyes", "Often seen smiling or laughing"],
+    publicPersona: "The messenger — bright, clever, and always up-to-date. The person who knows everyone and everything.",
+  },
+  cancer: {
+    sign: "cancer",
+    firstImpressions: "Gentle, nurturing, and approachable. They have a softness that makes people want to confide in them.",
+    socialBehavior: "Warm and protective with loved ones. May be shy initially but deeply caring once comfortable.",
+    appearanceTraits: ["Round or soft facial features", "Large, expressive eyes", "Comfortable, cozy clothing style", "Protective body language"],
+    publicPersona: "The caretaker — someone who makes others feel safe, understood, and at home.",
+  },
+  leo: {
+    sign: "leo",
+    firstImpressions: "Radiant, confident, and commanding. They have a magnetic presence that draws all eyes toward them.",
+    socialBehavior: "Generous with attention and praise. Natural entertainer who lights up any room they enter.",
+    appearanceTraits: ["Regal posture", "Luxurious hair or standout features", "Bold, fashionable clothing", "Radiant, warm smile"],
+    publicPersona: "The star — charismatic, creative, and unforgettable. A natural leader who inspires loyalty.",
+  },
+  virgo: {
+    sign: "virgo",
+    firstImpressions: "Refined, composed, and intelligent. They appear put-together and observant, noticing details others miss.",
+    socialBehavior: "Polite, helpful, and modest. May seem reserved but is quietly analyzing and assisting.",
+    appearanceTraits: ["Clean, polished appearance", "Thoughtful, observant eyes", "Practical but elegant clothing", "Graceful, precise movements"],
+    publicPersona: "The analyst — intelligent, capable, and dependable. The person who always has everything under control.",
+  },
+  libra: {
+    sign: "libra",
+    firstImpressions: "Charming, graceful, and beautiful. They have an elegant presence that makes everything seem harmonious.",
+    socialBehavior: "Diplomatic, social, and agreeable. Natural host who makes everyone feel included and valued.",
+    appearanceTraits: ["Symmetrical, balanced features", "Pleasant, disarming smile", "Stylish and fashionable", "Poised, graceful movements"],
+    publicPersona: "The diplomat — charming, fair-minded, and socially graceful. Someone who brings people together.",
+  },
+  scorpio: {
+    sign: "scorpio",
+    firstImpressions: "Intense, mysterious, and magnetic. Their gaze penetrates and they seem to know more than they reveal.",
+    socialBehavior: "Reserved and observant. Commands attention without trying. Speaks with depth and purpose.",
+    appearanceTraits: ["Intense, piercing eyes", "Magnetic or brooding presence", "Often wears dark colors", "Controlled, deliberate movements"],
+    publicPersona: "The enigma — powerful, private, and intriguing. Someone you sense has hidden depths.",
+  },
+  sagittarius: {
+    sign: "sagittarius",
+    firstImpressions: "Optimistic, open, and adventurous. Their energy is expansive and they seem ready for any adventure.",
+    socialBehavior: "Friendly, honest, and philosophical. Loves to explore ideas and cultures with others.",
+    appearanceTraits: ["Athletic or restless energy", "Open, smiling expression", "Casual, comfortable style", "Expansive gestures"],
+    publicPersona: "The explorer — free-spirited, wise, and always seeking truth. An inspiring free thinker.",
+  },
+  capricorn: {
+    sign: "capricorn",
+    firstImpressions: "Serious, ambitious, and authoritative. They command respect and seem older than their years.",
+    socialBehavior: "Reserved and professional. Earns respect through competence and reliability.",
+    appearanceTraits: ["Classic, timeless style", "Structured posture", "Serious, focused expression", "Understated but quality accessories"],
+    publicPersona: "The achiever — disciplined, responsible, and destined for success. A natural authority figure.",
+  },
+  aquarius: {
+    sign: "aquarius",
+    firstImpressions: "Unique, intellectual, and unconventional. They stand out as original and forward-thinking.",
+    socialBehavior: "Friendly but detached. Engages deeply with ideas and causes rather than small talk.",
+    appearanceTraits: ["Unique or eclectic style", "Unusual accessories or hair", "Expressive, thoughtful eyes", "Relaxed, individualistic posture"],
+    publicPersona: "The visionary — brilliant, unconventional, and ahead of their time. A catalyst for change.",
+  },
+  pisces: {
+    sign: "pisces",
+    firstImpressions: "Dreamy, gentle, and artistic. They have a soft, ethereal quality that feels otherworldly.",
+    socialBehavior: "Compassionate and empathetic. Blends into different groups easily. Deeply intuitive about others.",
+    appearanceTraits: ["Soft, dreamy eyes", "Flowing or artistic clothing", "Gentle, fluid movements", "Ethereal quality"],
+    publicPersona: "The mystic — creative, compassionate, and deeply intuitive. An old soul with a gentle heart.",
+  },
+};
