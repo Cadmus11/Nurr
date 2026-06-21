@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -6,7 +6,6 @@ import {
   Text,
   ScrollView,
   Animated,
-  Dimensions,
   TouchableWithoutFeedback,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -35,7 +34,9 @@ const NAV_ITEMS: NavItem[] = [
   { module: 'life-cycles', label: 'Life Cycles', icon: 'infinity', route: '/life-cycles' },
   { module: 'sacred-geometry', label: 'Sacred Geometry', icon: 'hexagon', route: '/sacred-geometry' },
   { module: 'reports', label: 'Reports', icon: 'doc.text', route: '/reports' },
-  { module: 'desktop-widgets', label: 'Desktop & Widgets', icon: 'desktopcomputer', route: '/desktop-widgets' },
+  { module: 'widgets', label: 'Widgets', icon: 'square.grid.2x2', route: '/widgets' },
+  { module: 'analytics', label: 'Analytics', icon: 'chart.bar', route: '/analytics' },
+  { module: 'desktop-widgets', label: 'Desktop App', icon: 'desktopcomputer', route: '/desktop-widgets' },
   { module: 'numerology', label: 'Numerology', icon: 'number', route: '/numerology' },
   { module: 'astrology', label: 'Astrology', icon: 'sun.max', route: '/astrology' },
   { module: 'tarot', label: 'Tarot', icon: 'rectangle.3.group', route: '/tarot' },
@@ -62,8 +63,8 @@ export function Sidebar() {
   const activeProfile = useProfileStore((s) => s.activeProfile);
   const profiles = useProfileStore((s) => s.profiles);
 
-  const slideAnim = useRef(new Animated.Value(-SidebarWidth)).current;
-  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const [slideAnim] = useState(() => new Animated.Value(-SidebarWidth));
+  const [fadeAnim] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
     Animated.parallel([
@@ -192,6 +193,8 @@ function getIconSymbol(icon: string): string {
     infinity: '∞',
     hexagon: '⬡',
     'doc.text': '📄',
+    'square.grid.2x2': '🔲',
+    'chart.bar': '📊',
     desktopcomputer: '🖥',
   };
   return map[icon] ?? '●';

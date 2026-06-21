@@ -1,19 +1,17 @@
 import { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/hooks/use-theme';
+import { useSpeech } from '@/hooks/use-speech';
 import { useProfileStore } from '@/stores/profile-store';
 import { Spacing } from '@/constants/theme';
 import { ZODIAC_SIGNS } from '@/constants/cosmic/zodiac';
-import { CHINESE_ZODIAC } from '@/constants/cosmic/chineseZodiac';
 import { ELEMENT_MEANINGS } from '@/constants/cosmic/chineseZodiac';
 import { MOON_SIGNS } from '@/constants/cosmic/moonSigns';
 import { RISING_SIGNS } from '@/constants/cosmic/risingSigns';
-import { PLANETS } from '@/constants/cosmic/planets';
 import { SPIRIT_ANIMALS } from '@/constants/cosmic/spiritAnimals';
 import { findBirthstone } from '@/constants/cosmic/birthstones';
 import { calculateSunSign, calculateRisingSign, calculateLifePath, calculateDestinyNumber, calculateChineseZodiac, calculateChineseElement, getBirthMoonPhase, getMoonSign } from '@/utils/calculations';
-import type { ZodiacSign } from '@/types/cosmic';
 
 interface BlueprintEntry {
   label: string;
@@ -25,6 +23,7 @@ export default function BlueprintScreen() {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const activeProfile = useProfileStore((s) => s.activeProfile);
+  const { speak, isSpeaking } = useSpeech();
 
   const blueprint = useMemo(() => {
     if (!activeProfile) return null;
@@ -36,7 +35,6 @@ export default function BlueprintScreen() {
     const sunData = ZODIAC_SIGNS[sunSign];
     const chineseAnimal = calculateChineseZodiac(y);
     const chineseElement = calculateChineseElement(y);
-    const chineseData = CHINESE_ZODIAC[chineseAnimal];
     const elementData = ELEMENT_MEANINGS[chineseElement];
     const lifePath = calculateLifePath(activeProfile.birthDate);
     const destinyNum = calculateDestinyNumber(activeProfile.name);
@@ -68,10 +66,25 @@ export default function BlueprintScreen() {
     <ScrollView style={[styles.scroll, { backgroundColor: theme.background }]}
       contentContainerStyle={{ paddingBottom: insets.bottom + Spacing.six }}>
       <View style={styles.content}>
-        <Text style={[styles.title, { color: theme.text }]}>Cosmic Blueprint</Text>
-        <Text style={[styles.subtitle, { color: theme.textSecondary }]}>
-          {activeProfile?.name ?? 'Create a profile to see your cosmic blueprint'}
-        </Text>
+        <View style={styles.headerRow}>
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.title, { color: theme.text }]}>Cosmic Blueprint</Text>
+            <Text style={[styles.subtitle, { color: theme.textSecondary }]}>
+              {activeProfile?.name ?? 'Create a profile to see your cosmic blueprint'}
+            </Text>
+          </View>
+          {activeProfile && blueprint && (
+            <Pressable
+              onPress={() => {
+                const text = `Cosmic Blueprint for ${activeProfile.name}. Sun Sign ${blueprint.sunData.symbol} ${capitalize(blueprint.sunSign)}. Moon Sign ${capitalize(blueprint.moonSign)}. Rising Sign ${capitalize(blueprint.risingSign)}. Life Path ${blueprint.lifePath}. Destiny Number ${blueprint.destinyNum}. Chinese Zodiac ${capitalize(blueprint.chineseAnimal)}. Birthstone ${blueprint.birthstone.stone}. Spirit Animal ${blueprint.spiritAnimal.animal}.`;
+                speak(text);
+              }}
+              style={({ pressed }) => [styles.speakBtn, { backgroundColor: isSpeaking ? theme.accent + '30' : theme.card, borderColor: theme.cardBorder, opacity: pressed ? 0.7 : 1 }]}
+            >
+              <Text style={[styles.speakIcon, { color: theme.accent }]}>{isSpeaking ? '⏹' : '🔊'}</Text>
+            </Pressable>
+          )}
+        </View>
 
         {!activeProfile ? (
           <View style={[styles.emptyCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
@@ -110,7 +123,10 @@ const styles = StyleSheet.create({
   scroll: { flex: 1 },
   content: { padding: Spacing.four, gap: Spacing.three },
   title: { fontSize: 28, fontWeight: '800' },
-  subtitle: { fontSize: 15, marginBottom: 8 },
+  subtitle: { fontSize: 15, marginBottom: 4 },
+  headerRow: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between' },
+  speakBtn: { width: 44, height: 44, borderRadius: 12, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
+  speakIcon: { fontSize: 20 },
   emptyCard: { borderRadius: 14, borderWidth: 1, padding: Spacing.five, alignItems: 'center' },
   emptyText: { fontSize: 15, textAlign: 'center' },
   astroCard: { borderRadius: 14, borderWidth: 1, padding: Spacing.four, alignItems: 'center', gap: 4 },

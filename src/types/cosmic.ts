@@ -352,6 +352,17 @@ export interface Forecast {
   education: string;
 }
 
+// --- Daily Message ---
+export interface DailyMessage {
+  date: string;
+  energyScore: number;
+  affirmation: string;
+  guidance: string;
+  theme: string;
+  focus: string;
+  mantra: string;
+}
+
 // --- Energy Score ---
 export interface EnergyScore {
   overall: number;
@@ -437,6 +448,7 @@ export interface AppSettings {
   notifications: boolean;
   haptics: boolean;
   soundEffects: boolean;
+  onboardingComplete: boolean;
 }
 
 export type CosmicTheme =
@@ -474,4 +486,6 @@ export type CosmicModule =
   | "life-cycles"
   | "sacred-geometry"
   | "reports"
-  | "desktop-widgets";
+  | "desktop-widgets"
+  | "widgets"
+  | "analytics";

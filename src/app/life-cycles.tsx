@@ -30,14 +30,15 @@ export default function LifeCyclesScreen() {
     };
   }, [activeProfile]);
 
-  const currentDisplay = useMemo(() => {
+  function getCurrentDisplay() {
     if (!cycles) return null;
     switch (view) {
       case 'current': return { title: cycles.current, description: DEFAULT_LIFE_CYCLES.currentDescription };
       case 'growth': return { title: cycles.growth, description: DEFAULT_LIFE_CYCLES.growthDescription };
       case 'destiny': return { title: cycles.destiny, description: DEFAULT_LIFE_CYCLES.destinyDescription };
     }
-  }, [cycles, view]);
+  }
+  const currentDisplay = getCurrentDisplay();
 
   return (
     <ScrollView style={[styles.scroll, { backgroundColor: theme.background }]}

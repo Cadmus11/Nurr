@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import type { Profile, JournalEntry, JournalCategory, AppSettings, CosmicTheme } from '@/types/cosmic';
+import type { Profile, JournalEntry, AppSettings, CosmicTheme } from '@/types/cosmic';
 
 let db: SQLite.SQLiteDatabase | null = null;
 
@@ -44,6 +44,212 @@ export async function initDatabase(): Promise<void> {
       positions TEXT NOT NULL,
       date TEXT NOT NULL,
       notes TEXT,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS numerology_results (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      lifePath INTEGER NOT NULL,
+      destiny INTEGER NOT NULL,
+      soulUrge INTEGER NOT NULL,
+      personality INTEGER NOT NULL,
+      birthday INTEGER NOT NULL,
+      maturity INTEGER NOT NULL,
+      challengeNumbers TEXT NOT NULL DEFAULT '[]',
+      karmicDebt INTEGER,
+      pinnacleCycles TEXT NOT NULL DEFAULT '[]',
+      personalYear INTEGER NOT NULL,
+      personalMonth INTEGER NOT NULL,
+      personalDay INTEGER NOT NULL,
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS zodiac_profiles (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      sunSign TEXT NOT NULL,
+      moonSign TEXT NOT NULL,
+      risingSign TEXT NOT NULL,
+      element TEXT NOT NULL,
+      quality TEXT NOT NULL,
+      rulingPlanet TEXT NOT NULL,
+      birthChart TEXT,
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS moon_signs (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      sign TEXT NOT NULL,
+      emotionalNature TEXT,
+      hiddenFears TEXT,
+      relationshipPatterns TEXT,
+      emotionalStrengths TEXT NOT NULL DEFAULT '[]',
+      intuition TEXT,
+      subconscious TEXT,
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS sun_signs (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      sign TEXT NOT NULL,
+      purpose TEXT,
+      ego TEXT,
+      personality TEXT NOT NULL DEFAULT '[]',
+      strengths TEXT NOT NULL DEFAULT '[]',
+      challenges TEXT NOT NULL DEFAULT '[]',
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS rising_signs (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      sign TEXT NOT NULL,
+      firstImpressions TEXT,
+      socialBehavior TEXT,
+      appearanceTraits TEXT NOT NULL DEFAULT '[]',
+      publicPersona TEXT,
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS chinese_zodiac (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      animal TEXT NOT NULL,
+      element TEXT NOT NULL,
+      personality TEXT NOT NULL DEFAULT '[]',
+      compatibility TEXT NOT NULL DEFAULT '[]',
+      enemy TEXT NOT NULL DEFAULT '[]',
+      friends TEXT NOT NULL DEFAULT '[]',
+      luckyNumbers TEXT NOT NULL DEFAULT '[]',
+      luckyColors TEXT NOT NULL DEFAULT '[]',
+      luckyDirections TEXT NOT NULL DEFAULT '[]',
+      careerPaths TEXT NOT NULL DEFAULT '[]',
+      traits TEXT,
+      bestYears TEXT NOT NULL DEFAULT '[]',
+      challengingYears TEXT NOT NULL DEFAULT '[]',
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS compatibility_reports (
+      id TEXT PRIMARY KEY,
+      profileAId TEXT NOT NULL,
+      profileBId TEXT NOT NULL,
+      love INTEGER NOT NULL,
+      marriage INTEGER NOT NULL,
+      friendship INTEGER NOT NULL,
+      business INTEGER NOT NULL,
+      communication INTEGER NOT NULL,
+      spiritual INTEGER NOT NULL,
+      family INTEGER NOT NULL,
+      strengths TEXT NOT NULL DEFAULT '[]',
+      weaknesses TEXT NOT NULL DEFAULT '[]',
+      advice TEXT NOT NULL DEFAULT '[]',
+      growthAreas TEXT NOT NULL DEFAULT '[]',
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (profileAId) REFERENCES profiles(id) ON DELETE CASCADE,
+      FOREIGN KEY (profileBId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS angel_numbers (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      number TEXT NOT NULL,
+      meaning TEXT,
+      message TEXT,
+      affirmation TEXT,
+      manifestationAdvice TEXT,
+      warnings TEXT NOT NULL DEFAULT '[]',
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS dream_symbols (
+      id TEXT PRIMARY KEY,
+      symbol TEXT NOT NULL,
+      category TEXT NOT NULL,
+      traditionalMeaning TEXT,
+      spiritualMeaning TEXT,
+      psychologicalMeaning TEXT,
+      advice TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS spirit_animals (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      animal TEXT NOT NULL,
+      traits TEXT NOT NULL DEFAULT '[]',
+      lifeGuidance TEXT,
+      strengths TEXT NOT NULL DEFAULT '[]',
+      spiritualMessage TEXT,
+      element TEXT,
+      direction TEXT,
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS chakra_data (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      chakra TEXT NOT NULL,
+      strength REAL NOT NULL DEFAULT 0.5,
+      weaknesses TEXT NOT NULL DEFAULT '[]',
+      balanceSuggestions TEXT NOT NULL DEFAULT '[]',
+      meditationAdvice TEXT,
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS forecasts (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      period TEXT NOT NULL,
+      date TEXT NOT NULL,
+      love TEXT,
+      career TEXT,
+      health TEXT,
+      finance TEXT,
+      energy INTEGER,
+      spiritual TEXT,
+      travel TEXT,
+      education TEXT,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS reports (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      type TEXT NOT NULL,
+      title TEXT NOT NULL,
+      content TEXT NOT NULL,
+      format TEXT NOT NULL DEFAULT 'json',
+      createdAt TEXT NOT NULL,
+      FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS themes (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE,
+      isActive INTEGER NOT NULL DEFAULT 0,
+      colors TEXT NOT NULL DEFAULT '{}',
+      createdAt TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS favorites (
+      id TEXT PRIMARY KEY,
+      profileId TEXT NOT NULL,
+      itemType TEXT NOT NULL,
+      itemId TEXT NOT NULL,
+      label TEXT,
+      createdAt TEXT NOT NULL,
       FOREIGN KEY (profileId) REFERENCES profiles(id) ON DELETE CASCADE
     );
   `);
@@ -213,6 +419,7 @@ export async function saveSettings(settings: AppSettings): Promise<void> {
   await setSetting('notifications', String(settings.notifications));
   await setSetting('haptics', String(settings.haptics));
   await setSetting('soundEffects', String(settings.soundEffects));
+  await setSetting('onboardingComplete', String(settings.onboardingComplete));
 }
 
 export async function loadSettings(): Promise<AppSettings | null> {
@@ -221,6 +428,7 @@ export async function loadSettings(): Promise<AppSettings | null> {
   const notifications = await getSetting('notifications');
   const haptics = await getSetting('haptics');
   const soundEffects = await getSetting('soundEffects');
+  const onboardingComplete = await getSetting('onboardingComplete');
   
   if (!theme) return null;
   
@@ -230,6 +438,7 @@ export async function loadSettings(): Promise<AppSettings | null> {
     notifications: notifications === 'true',
     haptics: haptics === 'true',
     soundEffects: soundEffects === 'true',
+    onboardingComplete: onboardingComplete !== 'false',
   };
 }
 

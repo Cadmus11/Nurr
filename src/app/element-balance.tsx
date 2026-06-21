@@ -21,7 +21,7 @@ export default function ElementBalanceScreen() {
 
   const profileElement = useMemo(() => {
     if (!activeProfile) return null;
-    const [y, m, d] = activeProfile.birthDate.split('-').map(Number);
+    const [, m, d] = activeProfile.birthDate.split('-').map(Number);
     const sunSign = calculateSunSign(m, d);
     return ZODIAC_SIGNS[sunSign].element;
   }, [activeProfile]);

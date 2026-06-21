@@ -12,5 +12,6 @@ export { getRisingSign } from './risingSign';
 export { getMoonPhase, getBirthMoonPhase, getMoonIllumination } from './lunarPhase';
 export { generateCosmicBlueprint } from './cosmicBlueprint';
 export { calculateCompatibility } from './compatibility';
-export { generateForecast, getForecast, calculateEnergyScore } from './forecast';
+export { generateForecast, getForecast, calculateEnergyScore, getDailyMessage } from './forecast';
+export { calculateSpiritAnimal } from './spiritAnimal';
 export { getAllies, getEnemies, getNeutralSigns, getChallengingYears, getProsperousYears, getEnemyYearInfo } from './enemyYears';

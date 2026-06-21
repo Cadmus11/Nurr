@@ -34,7 +34,6 @@ export default function MoonCalendarScreen() {
     return days;
   }, [selectedMonth]);
 
-  const currentMonth = new Date().getMonth();
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   const phaseCounts = useMemo(() => {
@@ -51,7 +50,7 @@ export default function MoonCalendarScreen() {
         <Text style={[styles.subtitle, { color: theme.textSecondary }]}>Lunar phases and energy interpretations</Text>
 
         <View style={[styles.todayCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-          <Text style={[styles.todayLabel, { color: theme.textSecondary }]}>Today's Moon</Text>
+          <Text style={[styles.todayLabel, { color: theme.textSecondary }]}>Today&apos;s Moon</Text>
           <Text style={styles.todayEmoji}>{PHASE_SYMBOLS[today.phase]}</Text>
           <Text style={[styles.todayPhase, { color: theme.accent }]}>{today.data.title}</Text>
           <Text style={[styles.todayEnergy, { color: theme.textSecondary }]}>{today.data.energy}</Text>

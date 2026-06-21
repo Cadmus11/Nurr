@@ -5,12 +5,6 @@
 import type {
   ZodiacSign,
   ZodiacData,
-  MoonSignData,
-  RisingSignData,
-  ElementData,
-  PlanetData,
-  PlanetName,
-  ZodiacElement,
 } from '@/types/cosmic';
 
 // ============================================================

@@ -5,17 +5,51 @@ import { useTheme } from '@/hooks/use-theme';
 import { useProfileStore } from '@/stores/profile-store';
 import { Spacing } from '@/constants/theme';
 import { calculateSunSign, getMoonSign, calculateLifePath, calculateChineseZodiac, calculateCompatibility } from '@/utils/calculations';
-import type { Profile } from '@/types/cosmic';
+import type { Profile, CompatibilityScore } from '@/types/cosmic';
 
-const SCORE_LABELS: { key: keyof import('@/types/cosmic').CompatibilityScore; label: string }[] = [
-  { key: 'love', label: 'Love' },
-  { key: 'friendship', label: 'Friendship' },
-  { key: 'business', label: 'Business' },
-  { key: 'marriage', label: 'Marriage' },
-  { key: 'communication', label: 'Communication' },
-  { key: 'spiritual', label: 'Spiritual' },
-  { key: 'family', label: 'Family' },
+const SCORE_LABELS: { key: keyof CompatibilityScore; label: string; icon: string }[] = [
+  { key: 'love', label: 'Love', icon: '❤' },
+  { key: 'marriage', label: 'Marriage', icon: '💍' },
+  { key: 'friendship', label: 'Friendship', icon: '🤝' },
+  { key: 'business', label: 'Business', icon: '💼' },
+  { key: 'communication', label: 'Communication', icon: '💬' },
+  { key: 'spiritual', label: 'Spiritual', icon: '🌌' },
+  { key: 'family', label: 'Family', icon: '👨‍👩‍👧‍👦' },
 ];
+
+function getAdvice(scores: CompatibilityScore): string[] {
+  const advice: string[] = [];
+  const avg = Object.values(scores).reduce((s, c) => s + c, 0) / Object.values(scores).length;
+  if (avg >= 80) advice.push('You share a rare cosmic harmony — nurture this connection with intention and gratitude.');
+  else if (avg >= 65) advice.push('Strong foundation exists — focus on your growth areas to deepen the bond.');
+  else if (avg >= 50) advice.push('Balance of harmony and challenge — communicate openly to bridge differences.');
+  else advice.push('Opposing energies create tension — with awareness and effort, differences can become strengths.');
+  if (scores.communication < 65) advice.push('Prioritize honest dialogue. Different communication styles need patience and practice.');
+  if (scores.love < scores.friendship) advice.push('Build on your natural friendship — romantic depth often follows genuine connection.');
+  if (scores.spiritual < 60) advice.push('Explore shared spiritual practices to align your deeper values.');
+  if (scores.family < 65) advice.push('Discuss family values and expectations early to build alignment.');
+  return advice;
+}
+
+function getGrowthAreas(scores: CompatibilityScore): string[] {
+  const areas: string[] = [];
+  const entries = Object.entries(scores) as [keyof CompatibilityScore, number][];
+  const sorted = entries.sort(([, a], [, b]) => a - b);
+  const lowest = sorted.slice(0, 3);
+  for (const [key] of lowest) {
+    const map: Record<string, string> = {
+      love: 'Cultivate romantic connection through quality time and shared experiences.',
+      marriage: 'Strengthen long-term alignment through shared goals and values.',
+      friendship: 'Invest in mutual interests and genuine enjoyment of each other.',
+      business: 'Define clear roles and complementary responsibilities.',
+      communication: 'Practice active listening and non-defensive expression.',
+      spiritual: 'Explore shared spiritual or philosophical practices.',
+      family: 'Align on family traditions, boundaries, and future visions.',
+    };
+    areas.push(map[key] ?? 'Conscious effort in this area will bring balance.');
+  }
+  return areas;
+}
 
 export default function CompatibilityScreen() {
   const insets = useSafeAreaInsets();
@@ -48,6 +82,8 @@ export default function CompatibilityScreen() {
       chineseAnimalA: chineseA, chineseAnimalB: chineseB,
     });
 
+    const avg = Math.round(Object.values(scores).reduce((s, c) => s + c, 0) / Object.values(scores).length);
+
     const strengths: string[] = [];
     const weaknesses: string[] = [];
     const highScores = Object.entries(scores).filter(([, v]) => v >= 75).map(([k]) => k);
@@ -60,9 +96,10 @@ export default function CompatibilityScreen() {
     if (scores.communication < 60) weaknesses.push('Communication styles differ — practice patience');
     if (scores.spiritual < 60) weaknesses.push('Spiritual values may not fully align');
 
-    const avg = Object.values(scores).reduce((s, c) => s + c, 0) / Object.values(scores).length;
+    const advice = getAdvice(scores);
+    const growthAreas = getGrowthAreas(scores);
 
-    return { scores, strengths, weaknesses, average: Math.round(avg) };
+    return { scores, strengths, weaknesses, advice, growthAreas, average: avg, profileA: a, profileB: b };
   }, [profileA, profileB, profiles]);
 
   return (
@@ -85,16 +122,33 @@ export default function CompatibilityScreen() {
             </View>
 
             {result && (
-              <View style={{ gap: 12 }}>
+              <View style={{ gap: 14 }}>
+                <View style={[styles.overallCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
+                  <Text style={[styles.overallLabel, { color: theme.textSecondary }]}>Overall Compatibility</Text>
+                  <Text style={[styles.overallScore, {
+                    color: result.average >= 75 ? theme.accentGreen : result.average >= 55 ? theme.accentOrange : theme.accent,
+                  }]}>{result.average}%</Text>
+                  <View style={[styles.overallTrack, { backgroundColor: theme.border }]}>
+                    <View style={[styles.overallFill, {
+                      backgroundColor: result.average >= 75 ? theme.accentGreen : result.average >= 55 ? theme.accentOrange : theme.accent,
+                      width: `${result.average}%` as any,
+                    }]} />
+                  </View>
+                </View>
+
                 <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-                  <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Compatibility Scores</Text>
-                  {SCORE_LABELS.map(({ key, label }) => {
+                  <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Category Scores</Text>
+                  {SCORE_LABELS.map(({ key, label, icon }) => {
                     const score = result.scores[key];
                     return (
                       <View key={key} style={styles.scoreRow}>
+                        <Text style={styles.scoreIcon}>{icon}</Text>
                         <Text style={[styles.scoreLabel, { color: theme.text }]}>{label}</Text>
                         <View style={[styles.scoreTrack, { backgroundColor: theme.border }]}>
-                          <View style={[styles.scoreFill, { backgroundColor: score > 80 ? theme.accentGreen : score > 60 ? theme.accentOrange : theme.accent, width: `${score}%` as any }]} />
+                          <View style={[styles.scoreFill, {
+                            backgroundColor: score >= 75 ? theme.accentGreen : score >= 55 ? theme.accentOrange : theme.accent,
+                            width: `${score}%` as any,
+                          }]} />
                         </View>
                         <Text style={[styles.scoreValue, { color: theme.textSecondary }]}>{score}%</Text>
                       </View>
@@ -103,20 +157,36 @@ export default function CompatibilityScreen() {
                 </View>
 
                 <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-                  <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Analysis</Text>
-                  {result.strengths.length > 0 && (
-                    <View style={{ gap: 4 }}>
-                      <Text style={[styles.strengthLabel, { color: theme.accentGreen }]}>Strengths</Text>
-                      {result.strengths.map((s, i) => <Text key={i} style={[styles.bullet, { color: theme.text }]}>✦ {s}</Text>)}
-                    </View>
-                  )}
-                  {result.weaknesses.length > 0 && (
-                    <View style={{ gap: 4, marginTop: 8 }}>
-                      <Text style={[styles.strengthLabel, { color: theme.accentOrange }]}>Growth Areas</Text>
-                      {result.weaknesses.map((w, i) => <Text key={i} style={[styles.bullet, { color: theme.text }]}>✦ {w}</Text>)}
-                    </View>
-                  )}
+                  <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Advice</Text>
+                  {result.advice.map((a, i) => (
+                    <Text key={i} style={[styles.bulletText, { color: theme.text }]}>✦ {a}</Text>
+                  ))}
                 </View>
+
+                <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
+                  <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Growth Areas</Text>
+                  {result.growthAreas.map((g, i) => (
+                    <Text key={i} style={[styles.bulletText, { color: theme.accentOrange }]}>○ {g}</Text>
+                  ))}
+                </View>
+
+                {result.strengths.length > 0 && (
+                  <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
+                    <Text style={[styles.statLabel, { color: theme.accentGreen }]}>Strengths</Text>
+                    {result.strengths.map((s, i) => (
+                      <Text key={i} style={[styles.bulletText, { color: theme.text }]}>✦ {s}</Text>
+                    ))}
+                  </View>
+                )}
+
+                {result.weaknesses.length > 0 && (
+                  <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
+                    <Text style={[styles.statLabel, { color: theme.accentOrange }]}>Growth Areas</Text>
+                    {result.weaknesses.map((w, i) => (
+                      <Text key={i} style={[styles.bulletText, { color: theme.text }]}>✦ {w}</Text>
+                    ))}
+                  </View>
+                )}
               </View>
             )}
           </>
@@ -151,19 +221,24 @@ const styles = StyleSheet.create({
   content: { padding: Spacing.four, gap: Spacing.three },
   title: { fontSize: 28, fontWeight: '800' },
   subtitle: { fontSize: 15, marginBottom: 8 },
-  card: { borderRadius: 14, borderWidth: 1, padding: Spacing.four, gap: 12 },
+  card: { borderRadius: 14, borderWidth: 1, padding: Spacing.four, gap: 10 },
   cardTitle: { fontSize: 18, fontWeight: '700' },
   cardDesc: { fontSize: 14, textAlign: 'center' },
   pickerRow: { flexDirection: 'row', gap: 12 },
   fieldLabel: { fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
   profileBtn: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 8, borderWidth: 1 },
   profileText: { fontSize: 13 },
+  overallCard: { borderRadius: 20, borderWidth: 1, padding: Spacing.four, alignItems: 'center', gap: 8 },
+  overallLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
+  overallScore: { fontSize: 56, fontWeight: '900' },
+  overallTrack: { width: '100%', height: 10, borderRadius: 5 },
+  overallFill: { height: 10, borderRadius: 5 },
   statLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
-  scoreRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  scoreLabel: { fontSize: 13, fontWeight: '600', width: 100 },
+  scoreRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  scoreIcon: { fontSize: 14, width: 24, textAlign: 'center' },
+  scoreLabel: { fontSize: 13, fontWeight: '600', width: 90 },
   scoreTrack: { flex: 1, height: 8, borderRadius: 4 },
   scoreFill: { height: 8, borderRadius: 4 },
   scoreValue: { fontSize: 13, fontWeight: '700', width: 36, textAlign: 'right' },
-  strengthLabel: { fontSize: 13, fontWeight: '700', marginBottom: 4 },
-  bullet: { fontSize: 14, lineHeight: 22 },
+  bulletText: { fontSize: 14, lineHeight: 22 },
 });

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/hooks/use-theme';
@@ -22,23 +22,21 @@ export default function JournalScreen() {
   const theme = useTheme();
   const activeProfile = useProfileStore((s) => s.activeProfile);
   const [entries, setEntries] = useState<JournalEntry[]>([]);
-  const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState<JournalCategory>('general');
   const [mood, setMood] = useState('');
   const [showForm, setShowForm] = useState(false);
 
-  const loadEntries = useCallback(async () => {
-    if (!activeProfile) { setLoading(false); return; }
-    try {
-      const data = await DB.getAllJournalEntries(activeProfile.id);
-      setEntries(data);
-    } catch { /* ignore */ }
-    setLoading(false);
+  useEffect(() => {
+    if (!activeProfile) return;
+    (async () => {
+      try {
+        const data = await DB.getAllJournalEntries(activeProfile.id);
+        setEntries(data);
+      } catch { /* ignore */ }
+    })();
   }, [activeProfile]);
-
-  useEffect(() => { loadEntries(); }, [loadEntries]);
 
   const canSave = title.trim().length > 0 && content.trim().length > 0;
 

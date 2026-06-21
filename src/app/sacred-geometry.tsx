@@ -18,7 +18,7 @@ export default function SacredGeometryScreen() {
       <View style={styles.content}>
         <Text style={[styles.title, { color: theme.text }]}>Sacred Geometry</Text>
         <Text style={[styles.subtitle, { color: theme.textSecondary }]}>
-          Metatron's Cube, Flower of Life & Sri Yantra
+          Metatron&apos;s Cube, Flower of Life &amp; Sri Yantra
         </Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>

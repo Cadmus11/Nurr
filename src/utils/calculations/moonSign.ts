@@ -1,6 +1,5 @@
 import type { ZodiacSign } from "@/types/cosmic";
 
-const MOON_DAYS_PER_SIGN = 2.275;
 const REFERENCE_DATE = new Date(2000, 0, 6, 12, 0, 0).getTime();
 const REFERENCE_DEGREES = 285;
 

@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { useTheme } from '@/hooks/use-theme';
 import { Spacing } from '@/constants/theme';
+import { useAppStore } from '@/stores/app-store';
 
 interface Step {
   title: string;
@@ -48,18 +49,21 @@ export default function OnboardingScreen() {
   const theme = useTheme();
   const [step, setStep] = useState(0);
 
+  const updateSettings = useAppStore((s) => s.updateSettings);
   const current = STEPS[step];
   const isLast = step === STEPS.length - 1;
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (isLast) {
+      await updateSettings({ onboardingComplete: true });
       router.navigate('/profile-create');
     } else {
       setStep(step + 1);
     }
   };
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
+    await updateSettings({ onboardingComplete: true });
     router.navigate('/');
   };
 

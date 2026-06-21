@@ -73,8 +73,7 @@ export function calculateMaturityNumber(lifePath: number, destiny: number): numb
 }
 
 export function calculatePersonalYear(birthDate: string): number {
-  const [y] = birthDate.split('-').map(Number);
-  const [_, m, d] = birthDate.split('-').map(Number);
+  const [, m, d] = birthDate.split('-').map(Number);
   const currentYear = new Date().getFullYear();
   const sum = reduceNonMaster(m) + reduceNonMaster(d) + reduceNonMaster(currentYear);
   return reduceToRoot(sum);

@@ -1,4 +1,5 @@
-import { Stack } from 'expo-router';
+import { useEffect } from 'react';
+import { Stack, router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -6,10 +7,30 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
 import { TopBar } from '@/components/top-bar';
 import { Sidebar } from '@/components/sidebar';
+import { initDatabase } from '@/services/database';
+import { useAppStore } from '@/stores/app-store';
+import { useProfileStore } from '@/stores/profile-store';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
+  const loadSettings = useAppStore((s) => s.loadSettings);
+  const settings = useAppStore((s) => s.settings);
+  const loaded = useAppStore((s) => s.loaded);
+  const loadProfiles = useProfileStore((s) => s.loadProfiles);
+
+  useEffect(() => {
+    initDatabase().then(() => {
+      loadSettings();
+      loadProfiles();
+    });
+  }, [loadSettings, loadProfiles]);
+
+  useEffect(() => {
+    if (loaded && !settings.onboardingComplete) {
+      router.replace('/onboarding');
+    }
+  }, [loaded, settings.onboardingComplete]);
 
   return (
     <GestureHandlerRootView style={styles.root}>
@@ -48,6 +69,8 @@ export default function RootLayout() {
           <Stack.Screen name="sacred-geometry" />
           <Stack.Screen name="reports" />
           <Stack.Screen name="desktop-widgets" />
+          <Stack.Screen name="widgets" />
+          <Stack.Screen name="analytics" />
           <Stack.Screen name="search" />
         </Stack>
       </View>

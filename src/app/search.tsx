@@ -89,7 +89,7 @@ export default function SearchScreen() {
         />
 
         {results.length === 0 && query.trim() ? (
-          <Text style={[styles.emptyText, { color: theme.textTertiary }]}>No results found for "{query}"</Text>
+          <Text style={[styles.emptyText, { color: theme.textTertiary }]}>No results found for &ldquo;{query}&rdquo;</Text>
         ) : null}
 
         {results.length > 0 && (

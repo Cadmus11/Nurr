@@ -25,7 +25,7 @@ export default function PlanetInfluenceScreen() {
 
   const dominantPlanet = useMemo(() => {
     if (!activeProfile) return null;
-    const [y, m, d] = activeProfile.birthDate.split('-').map(Number);
+    const [, m, d] = activeProfile.birthDate.split('-').map(Number);
     const sunSign = calculateSunSign(m, d);
     return ZODIAC_SIGNS[sunSign].rulingPlanet.toLowerCase() as PlanetName;
   }, [activeProfile]);

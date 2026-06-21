@@ -4,7 +4,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/hooks/use-theme';
 import { useProfileStore } from '@/stores/profile-store';
 import { Spacing } from '@/constants/theme';
-import { calculateChineseZodiac } from '@/utils/calculations';
 import { getEnemyYearInfo } from '@/utils/calculations';
 import { CHINESE_ZODIAC } from '@/constants/cosmic/chineseZodiac';
 import type { ChineseZodiacAnimal } from '@/types/cosmic';

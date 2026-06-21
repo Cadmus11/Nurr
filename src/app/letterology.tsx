@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/hooks/use-theme';
 import { Spacing } from '@/constants/theme';
@@ -10,15 +10,21 @@ const PYTHAGOREAN: Record<string, number> = {
   s: 1, t: 2, u: 3, v: 4, w: 5, x: 6, y: 7, z: 8,
 };
 
+const CHALDEAN: Record<string, number> = {
+  a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 1,
+  j: 1, k: 2, l: 3, m: 4, n: 5, o: 7, p: 8, q: 1, r: 2,
+  s: 3, t: 4, u: 6, v: 6, w: 6, x: 5, y: 1, z: 7,
+};
+
 function reduceToRoot(n: number): number {
   if (n === 11 || n === 22 || n === 33) return n;
   while (n > 9) n = String(n).split('').reduce((s, d) => s + Number(d), 0);
   return n;
 }
 
-function analyzeName(name: string) {
+function analyzeName(name: string, system: Record<string, number>) {
   const letters = name.replace(/[^a-zA-Z]/g, '').toLowerCase().split('');
-  const values = letters.map((l) => ({ letter: l, value: PYTHAGOREAN[l] ?? 0 }));
+  const values = letters.map((l) => ({ letter: l, value: system[l] ?? 0 }));
   const total = values.reduce((s, v) => s + v.value, 0);
   const root = reduceToRoot(total);
   const vowels = ['a', 'e', 'i', 'o', 'u'];
@@ -48,7 +54,8 @@ export default function LetterologyScreen() {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const [name, setName] = useState('');
-  const result = name.trim() ? analyzeName(name.trim()) : null;
+  const [system, setSystem] = useState<'pythagorean' | 'chaldean'>('pythagorean');
+  const result = name.trim() ? analyzeName(name.trim(), system === 'pythagorean' ? PYTHAGOREAN : CHALDEAN) : null;
 
   return (
     <ScrollView style={[styles.scroll, { backgroundColor: theme.background }]}
@@ -69,10 +76,21 @@ export default function LetterologyScreen() {
           autoCapitalize="words"
         />
 
+        <View style={styles.systemRow}>
+          <Pressable onPress={() => setSystem('pythagorean')}
+            style={[styles.systemBtn, { backgroundColor: system === 'pythagorean' ? theme.accent : theme.surface, borderColor: system === 'pythagorean' ? theme.accent : theme.border }]}>
+            <Text style={[styles.systemText, { color: system === 'pythagorean' ? '#fff' : theme.text }]}>Pythagorean</Text>
+          </Pressable>
+          <Pressable onPress={() => setSystem('chaldean')}
+            style={[styles.systemBtn, { backgroundColor: system === 'chaldean' ? theme.accent : theme.surface, borderColor: system === 'chaldean' ? theme.accent : theme.border }]}>
+            <Text style={[styles.systemText, { color: system === 'chaldean' ? '#fff' : theme.text }]}>Chaldean</Text>
+          </Pressable>
+        </View>
+
         {result && (
           <View style={styles.results}>
             <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Expression Number</Text>
+              <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Expression Number ({system === 'pythagorean' ? 'Pythagorean' : 'Chaldean'})</Text>
               <Text style={[styles.statValue, { color: theme.accent }]}>{result.root}</Text>
               <Text style={[styles.statDesc, { color: theme.text }]}>{MEANINGS[result.root] ?? ''}</Text>
             </View>
@@ -97,7 +115,7 @@ export default function LetterologyScreen() {
                   <Text style={[styles.letterChar, { color: theme.text }]}>{v.letter.toUpperCase()}</Text>
                   <Text style={[styles.letterEq, { color: theme.textSecondary }]}>= {v.value}</Text>
                   <View style={[styles.letterBar, { backgroundColor: theme.accent + '20' }]}>
-                    <View style={[styles.letterFill, { backgroundColor: theme.accent, width: `${(v.value / 9) * 100}%` as any }]} />
+                    <View style={[styles.letterFill, { backgroundColor: theme.accent, width: `${(v.value / (system === 'chaldean' ? 8 : 9)) * 100}%` as any }]} />
                   </View>
                 </View>
               ))}
@@ -119,6 +137,9 @@ const styles = StyleSheet.create({
   title: { fontSize: 28, fontWeight: '800' },
   subtitle: { fontSize: 15, marginBottom: 8 },
   input: { borderWidth: 1, borderRadius: 12, paddingHorizontal: 16, paddingVertical: 14, fontSize: 18, fontWeight: '600' },
+  systemRow: { flexDirection: 'row', gap: 8 },
+  systemBtn: { flex: 1, paddingVertical: 10, borderRadius: 10, borderWidth: 1, alignItems: 'center' },
+  systemText: { fontSize: 14, fontWeight: '600' },
   results: { gap: 12 },
   card: { borderRadius: 14, borderWidth: 1, padding: Spacing.four, alignItems: 'center', gap: 8 },
   statLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },

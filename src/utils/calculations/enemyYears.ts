@@ -1,6 +1,5 @@
 import type { ChineseZodiacAnimal } from "@/types/cosmic";
 import { CHINESE_ZODIAC } from "@/constants/cosmic/chineseZodiac";
-import { getChineseZodiacAnimal } from "./chineseZodiac";
 
 export function getAllies(animal: ChineseZodiacAnimal): ChineseZodiacAnimal[] {
   return CHINESE_ZODIAC[animal].friends;

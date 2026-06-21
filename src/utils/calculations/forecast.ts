@@ -1,6 +1,7 @@
-import type { Forecast, ForecastPeriod, EnergyScore } from "@/types/cosmic";
+import type { Forecast, ForecastPeriod, EnergyScore, DailyMessage } from "@/types/cosmic";
 import { calculatePersonalYear } from "./numerology";
-import { getMoonPhase } from "./lunarPhase";
+import { calculateSunSign } from "./zodiac";
+import { calculateChineseZodiac } from "./chineseZodiac";
 
 function generateDateString(period: ForecastPeriod): string {
   const now = new Date();
@@ -133,6 +134,105 @@ export function getForecast(birthDate: string, period: ForecastPeriod): Forecast
     period,
     date: generateDateString(period),
     ...generateForecast(birthDate, period),
+  };
+}
+
+const AFFIRMATIONS_BY_SCORE: Record<string, string[]> = {
+  high: [
+    "The universe amplifies your power today — step boldly into your greatness",
+    "Cosmic energies align in your favor — trust the momentum you feel",
+    "Today carries a high vibration — your intentions manifest with ease",
+    "Stars radiate strength for you — embrace the confidence flowing through you",
+    "A powerful cosmic current carries you forward — ride it with faith",
+  ],
+  moderate: [
+    "Balance guides your day — steady energy supports meaningful progress",
+    "The cosmos offers gentle support — consistent effort brings results",
+    "Today's energy flows at an even pace — perfect for steady advancement",
+    "Harmonious vibrations surround you — build on the stability you feel",
+    "Moderate skies hold steady — keep moving with calm determination",
+  ],
+  low: [
+    "Today is a gentle tide — rest, reflect, and honor your rhythms",
+    "Low energy days are sacred — the cosmos asks you to slow down",
+    "Soft energies invite inward focus — nurture yourself without guilt",
+    "The stars suggest stillness today — restoration powers tomorrow's rise",
+    "A quiet day carries hidden gifts — listen closely to your inner voice",
+  ],
+};
+
+const THEMES_BY_SCORE: Record<string, string[]> = {
+  high: ["Ignition", "Ascension", "Radiance", "Breakthrough", "Alignment"],
+  moderate: ["Harmony", "Growth", "Foundation", "Flow", "Balance"],
+  low: ["Restoration", "Reflection", "Stillness", "Cocooning", "Surrender"],
+};
+
+const FOCUS_AREAS: Record<string, string[]> = {
+  high: ["Lead with courage and take inspired action", "Share your light — your presence elevates others", "Now is the time to launch what you've been planning", "Trust your instincts — they are sharp today", "Amplify your vision and speak it into existence"],
+  moderate: ["Consistency over intensity — small steps compound", "Strengthen your foundations with patient effort", "Balance action with reflection for optimal flow", "Build bridges — connections made today will last", "Tend to what's growing with steady attention"],
+  low: ["Prioritize rest and deep nourishment", "Release the need to produce — being is enough", "Turn inward for the answers you seek", "Gentle movement and quiet contemplation restore you", "Forgive yourself for any perceived slowness"],
+};
+
+const MANTRA_BY_ENERGY: Record<string, string[]> = {
+  high: ["I am a vessel of cosmic power", "Today I shine without apology", "The universe moves through me with purpose", "I am aligned with the highest frequencies", "My energy creates my reality"],
+  moderate: ["I am exactly where I need to be", "Balance is my natural state", "I trust the pace of my journey", "Each step forward is a victory", "I flow with the rhythm of the cosmos"],
+  low: ["Stillness is also sacred", "I honor my need to restore", "Rest is my right, not a reward", "The quiet times teach me the most", "I surrender and trust the process"],
+};
+
+const GUIDANCE_BY_PERSONAL_YEAR: Record<string, string[]> = {
+  "1": ["New beginnings are charging your energy today", "Your leadership energy is called upon — step forward"],
+  "2": ["Partnership energy softens the day — seek connection", "Collaboration brings unexpected peace today"],
+  "3": ["Creative expression fuels your spirit — share your voice", "Joy finds you when you embrace your playful side"],
+  "4": ["Discipline today builds tomorrow's freedom", "Structure supports you — lean into your routines"],
+  "5": ["Adventure energy stirs — embrace healthy change", "Freedom calls — break one small pattern today"],
+  "6": ["Love and service center your energy today", "Nurturing others fills your own cup as well"],
+  "7": ["Wisdom seeks you in quiet moments today", "Trust your intuition — it speaks clearly now"],
+  "8": ["Power and abundance energy surrounds you", "You are building something significant — keep going"],
+  "9": ["Completion energy brings clarity and release", "Letting go creates space for new blessings"],
+};
+
+export function getDailyMessage(
+  birthDate: string,
+  name: string,
+): DailyMessage {
+  const now = new Date();
+  const dateStr = now.toISOString().split("T")[0];
+  const energy = calculateEnergyScore(birthDate);
+  const py = calculatePersonalYear(birthDate);
+  const [y, m, d] = birthDate.split("-").map(Number);
+  const sunSign = calculateSunSign(m, d);
+  const chineseAnimal = calculateChineseZodiac(y);
+
+  const baseSeed = now.getFullYear() + now.getMonth() + now.getDate() + py + d;
+
+  function pick(arr: string[], offset = 0): string {
+    return arr[(baseSeed + offset) % arr.length];
+  }
+
+  const band: "high" | "moderate" | "low" =
+    energy.overall >= 66 ? "high"
+    : energy.overall >= 33 ? "moderate"
+    : "low";
+
+  const affirmation = pick(AFFIRMATIONS_BY_SCORE[band]);
+  const theme = pick(THEMES_BY_SCORE[band]);
+  const focus = pick(FOCUS_AREAS[band], 1);
+  const mantra = pick(MANTRA_BY_ENERGY[band], 2);
+
+  const guidanceKey = String(py);
+  const guidancePool = GUIDANCE_BY_PERSONAL_YEAR[guidanceKey] ?? GUIDANCE_BY_PERSONAL_YEAR["1"];
+  const personalGuidance = guidancePool[(baseSeed + 3) % guidancePool.length];
+
+  const guidance = `${personalGuidance}. As a ${sunSign} born in the ${chineseAnimal} year, today's energy (${energy.overall}/100) favors ${energy.career} career moves, ${energy.love} love connections, and ${energy.finance} financial decisions.`;
+
+  return {
+    date: dateStr,
+    energyScore: energy.overall,
+    affirmation,
+    guidance,
+    theme,
+    focus,
+    mantra,
   };
 }
 

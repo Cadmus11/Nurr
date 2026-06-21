@@ -7,7 +7,6 @@ import { Spacing } from '@/constants/theme';
 import { ZODIAC_SIGNS } from '@/constants/cosmic/zodiac';
 import { MOON_SIGNS } from '@/constants/cosmic/moonSigns';
 import { RISING_SIGNS } from '@/constants/cosmic/risingSigns';
-import { ELEMENTS } from '@/constants/cosmic/elements';
 import { calculateSunSign, calculateMoonSign, calculateRisingSign } from '@/utils/calculations';
 
 type Tab = 'sun' | 'moon' | 'rising';
@@ -61,7 +60,6 @@ export default function AstrologyScreen() {
 }
 
 function SunSignView({ data, theme }: { data: typeof ZODIAC_SIGNS.aries; theme: any }) {
-  const element = ELEMENTS[data.element];
   return (
     <View style={{ gap: 12 }}>
       <View style={[styles.signHeader, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>

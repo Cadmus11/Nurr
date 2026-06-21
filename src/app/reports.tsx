@@ -1,9 +1,11 @@
-import { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { useMemo, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, Pressable, Alert, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/hooks/use-theme';
 import { useProfileStore } from '@/stores/profile-store';
 import { Spacing } from '@/constants/theme';
+import * as Print from 'expo-print';
+import * as FileSystem from 'expo-file-system/legacy';
 import {
   calculateSunSign, calculateMoonSign, calculateRisingSign,
   calculateLifePath, calculateDestinyNumber, calculateChineseZodiac, calculateChineseElement,
@@ -13,12 +15,11 @@ import { ZODIAC_SIGNS } from '@/constants/cosmic/zodiac';
 import { CHINESE_ZODIAC, ELEMENT_MEANINGS } from '@/constants/cosmic/chineseZodiac';
 import { findBirthstone } from '@/constants/cosmic/birthstones';
 
-type ReportType = 'blueprint' | 'numerology' | 'astrology';
-
 export default function ReportsScreen() {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const activeProfile = useProfileStore((s) => s.activeProfile);
+  const [exporting, setExporting] = useState(false);
 
   const reportData = useMemo(() => {
     if (!activeProfile) return null;
@@ -42,6 +43,78 @@ export default function ReportsScreen() {
       lifePath, destiny, numerology, birthstone,
     };
   }, [activeProfile]);
+
+  async function exportPdf() {
+    if (!reportData) return;
+    setExporting(true);
+    try {
+      const html = `
+        <html>
+          <head>
+            <style>
+              body { font-family: 'Georgia', serif; color: #1a1a2e; padding: 40px; }
+              h1 { color: #7c3aed; font-size: 28px; border-bottom: 2px solid #7c3aed; padding-bottom: 8px; }
+              h2 { color: #5b21b6; font-size: 20px; margin-top: 24px; }
+              .section { margin: 16px 0; padding: 12px; background: #f5f3ff; border-radius: 8px; }
+              .row { display: flex; justify-content: space-between; padding: 4px 0; }
+              .label { font-weight: 600; color: #6b7280; }
+              .value { font-weight: 700; color: #1a1a2e; }
+            </style>
+          </head>
+          <body>
+            <h1>Cosmic Blueprint Report</h1>
+            <p style="color: #6b7280;">For ${reportData.name}</p>
+            <div class="section">
+              <h2>Astrology</h2>
+              <div class="row"><span class="label">Sun Sign</span><span class="value">${reportData.sunData.symbol} ${capitalize(reportData.sunSign)}</span></div>
+              <div class="row"><span class="label">Moon Sign</span><span class="value">${capitalize(reportData.moonSign)}</span></div>
+              <div class="row"><span class="label">Rising Sign</span><span class="value">${capitalize(reportData.risingSign)}</span></div>
+              <div class="row"><span class="label">Ruling Planet</span><span class="value">${reportData.sunData.rulingPlanet}</span></div>
+            </div>
+            <div class="section">
+              <h2>Chinese Zodiac</h2>
+              <div class="row"><span class="label">Animal</span><span class="value">${capitalize(reportData.chineseAnimal)}</span></div>
+              <div class="row"><span class="label">Element</span><span class="value">${reportData.elementData.name}</span></div>
+              <div class="row"><span class="label">Direction</span><span class="value">${reportData.elementData.direction}</span></div>
+            </div>
+            <div class="section">
+              <h2>Numerology</h2>
+              <div class="row"><span class="label">Life Path</span><span class="value">${reportData.lifePath}</span></div>
+              <div class="row"><span class="label">Destiny Number</span><span class="value">${reportData.destiny}</span></div>
+              ${reportData.numerology ? `
+              <div class="row"><span class="label">Soul Urge</span><span class="value">${reportData.numerology.soulUrge}</span></div>
+              <div class="row"><span class="label">Personality</span><span class="value">${reportData.numerology.personality}</span></div>
+              <div class="row"><span class="label">Personal Year</span><span class="value">${reportData.numerology.personalYear}</span></div>
+              ` : ''}
+            </div>
+            <div class="section">
+              <h2>Birthstone</h2>
+              <div class="row"><span class="label">Stone</span><span class="value">${reportData.birthstone.stone}</span></div>
+            </div>
+          </body>
+        </html>
+      `;
+
+      const { uri } = await Print.printToFileAsync({ html });
+
+      if (Platform.OS === 'web') {
+        const blob = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+        const link = document.createElement('a');
+        link.href = `data:application/pdf;base64,${blob}`;
+        link.download = `CosmicOracle_${reportData.name}_Report.pdf`;
+        link.click();
+      } else {
+        const pdfName = `CosmicOracle_${reportData.name}_Report.pdf`;
+        const dest = `${FileSystem.documentDirectory}${pdfName}`;
+        await FileSystem.moveAsync({ from: uri, to: dest });
+        Alert.alert('PDF Saved', `Report saved to:\n${dest}`);
+      }
+    } catch {
+      Alert.alert('Export Failed', 'Unable to generate PDF. Please try again.');
+    } finally {
+      setExporting(false);
+    }
+  }
 
   return (
     <ScrollView style={[styles.scroll, { backgroundColor: theme.background }]}
@@ -95,8 +168,14 @@ export default function ReportsScreen() {
               <ReportRow label="Traits" value={reportData.chineseData.traits} theme={theme} />
             </View>
 
-            <Pressable style={[styles.exportBtn, { backgroundColor: theme.accent }]}>
-              <Text style={styles.exportBtnText}>📄 Export as PDF</Text>
+            <Pressable
+              style={[styles.exportBtn, { backgroundColor: theme.accent, opacity: exporting ? 0.6 : 1 }]}
+              onPress={exportPdf}
+              disabled={exporting}
+            >
+              <Text style={styles.exportBtnText}>
+                {exporting ? 'Generating PDF...' : '📄 Export as PDF'}
+              </Text>
             </Pressable>
           </>
         ) : null}

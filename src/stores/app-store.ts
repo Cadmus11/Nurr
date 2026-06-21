@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { CosmicModule, AppSettings, CosmicTheme } from '@/types/cosmic';
 import * as DB from '@/services/database';
+import { mmkv } from '@/services/cache';
 
 interface AppState {
   sidebarOpen: boolean;
@@ -20,7 +21,10 @@ const DEFAULT_SETTINGS: AppSettings = {
   notifications: true,
   haptics: true,
   soundEffects: true,
+  onboardingComplete: false,
 };
+
+const SETTINGS_KEY = 'app_settings';
 
 export const useAppStore = create<AppState>((set) => ({
   sidebarOpen: false,
@@ -29,11 +33,21 @@ export const useAppStore = create<AppState>((set) => ({
   loaded: false,
 
   loadSettings: async () => {
+    const cached = mmkv.getString(SETTINGS_KEY);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached) as AppSettings;
+        set({ settings: parsed, loaded: true });
+        return;
+      } catch {}
+    }
     const saved = await DB.loadSettings();
     if (saved) {
+      mmkv.set(SETTINGS_KEY, JSON.stringify(saved));
       set({ settings: saved, loaded: true });
     } else {
       await DB.saveSettings(DEFAULT_SETTINGS);
+      mmkv.set(SETTINGS_KEY, JSON.stringify(DEFAULT_SETTINGS));
       set({ loaded: true });
     }
   },
@@ -46,6 +60,7 @@ export const useAppStore = create<AppState>((set) => ({
     const current = (await DB.loadSettings()) ?? DEFAULT_SETTINGS;
     const merged = { ...current, ...partial };
     await DB.saveSettings(merged);
+    mmkv.set(SETTINGS_KEY, JSON.stringify(merged));
     set({ settings: merged });
   },
 }));
