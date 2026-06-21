@@ -1,39 +1,29 @@
-import type { ChineseZodiacAnimal, ChineseElement } from "@/types/cosmic";
+import type { ChineseZodiacAnimal, ChineseElement } from '@/types/cosmic';
+import { CHINESE_ZODIAC } from '@/constants/cosmic/chineseZodiac';
 
-const ANIMALS: ChineseZodiacAnimal[] = [
-  "monkey", "rooster", "dog", "pig",
-  "rat", "ox", "tiger", "rabbit",
-  "dragon", "snake", "horse", "goat",
-];
-
-const STEM_BRANCH: { element: ChineseElement; yin: boolean }[] = [
-  { element: "metal", yin: true },
-  { element: "metal", yin: false },
-  { element: "water", yin: true },
-  { element: "water", yin: false },
-  { element: "wood", yin: true },
-  { element: "wood", yin: false },
-  { element: "fire", yin: true },
-  { element: "fire", yin: false },
-  { element: "earth", yin: true },
-  { element: "earth", yin: false },
-];
-
-export function getChineseZodiacAnimal(year: number): ChineseZodiacAnimal {
-  return ANIMALS[year % 12];
+export function calculateChineseZodiac(birthYear: number): ChineseZodiacAnimal {
+  for (const [animal, data] of Object.entries(CHINESE_ZODIAC)) {
+    if (data.years.includes(birthYear)) {
+      return animal as ChineseZodiacAnimal;
+    }
+  }
+  const animals: ChineseZodiacAnimal[] = [
+    "rat", "ox", "tiger", "rabbit", "dragon", "snake",
+    "horse", "goat", "monkey", "rooster", "dog", "pig",
+  ];
+  return animals[(birthYear - 4) % 12];
 }
 
-export function getChineseElement(year: number): ChineseElement {
-  return STEM_BRANCH[year % 10].element;
+export function calculateChineseElement(birthYear: number): ChineseElement {
+  const elements: ChineseElement[] = ["wood", "fire", "earth", "metal", "water"];
+  return elements[Math.floor(((birthYear - 4) % 10) / 2)];
 }
 
-export function getChineseZodiacFromDate(birthDate: string): {
-  animal: ChineseZodiacAnimal;
-  element: ChineseElement;
-} {
+export function getChineseZodiacFromDate(birthDate: string): { animal: ChineseZodiacAnimal; element: ChineseElement } {
   const year = new Date(birthDate).getFullYear();
-  return {
-    animal: getChineseZodiacAnimal(year),
-    element: getChineseElement(year),
-  };
+  return { animal: calculateChineseZodiac(year), element: calculateChineseElement(year) };
+}
+
+export function getChineseZodiacAnimal(birthDate: string): ChineseZodiacAnimal {
+  return getChineseZodiacFromDate(birthDate).animal;
 }

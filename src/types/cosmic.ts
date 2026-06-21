@@ -466,4 +466,12 @@ export type CosmicModule =
   | "journal"
   | "profile"
   | "settings"
-  | "search";
+  | "search"
+  | "onboarding"
+  | "enemy-years"
+  | "planet-influence"
+  | "element-balance"
+  | "life-cycles"
+  | "sacred-geometry"
+  | "reports"
+  | "desktop-widgets";

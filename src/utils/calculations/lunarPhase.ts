@@ -14,7 +14,16 @@ const PHASES: { name: MoonPhase; start: number; end: number }[] = [
   { name: "waning-crescent", start: 0.8125, end: 1 },
 ];
 
-export function getMoonPhase(date: Date = new Date()): MoonPhase {
+export function getMoonPhase(date: Date): MoonPhase;
+export function getMoonPhase(year: number, month: number, day: number): MoonPhase;
+export function getMoonPhase(yOrDate: number | Date, month?: number, day?: number): MoonPhase {
+  let date: Date;
+  if (yOrDate instanceof Date) {
+    date = yOrDate;
+  } else {
+    date = new Date(yOrDate, (month ?? 1) - 1, day ?? 1);
+  }
+
   const msSinceRef = date.getTime() - KNOWN_NEW_MOON;
   const cycles = msSinceRef / LUNAR_CYCLE_MS;
   const fraction = ((cycles % 1) + 1) % 1;

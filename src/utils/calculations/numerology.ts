@@ -1,156 +1,151 @@
-import type { NumerologyResult } from "@/types/cosmic";
+import type { NumerologyResult } from '@/types/cosmic';
 
-function reduceNumber(n: number, masterNumbers = true): number {
-  if (n === 0) return 0;
-  const masters = new Set([11, 22, 33]);
-  let num = n;
-  while (num > 9 && !(masterNumbers && masters.has(num))) {
-    num = String(num)
-      .split("")
-      .reduce((sum, d) => sum + parseInt(d, 10), 0);
-  }
-  return num;
+function reduceToRoot(n: number): number {
+  if (n === 11 || n === 22 || n === 33) return n;
+  while (n > 9) n = String(n).split('').reduce((s, d) => s + Number(d), 0);
+  return n;
 }
 
-function letterValue(char: string): number {
-  const upper = char.toUpperCase();
-  const code = upper.charCodeAt(0);
-  if (code < 65 || code > 90) return 0;
-  const pos = code - 64;
-  return ((pos - 1) % 9) + 1;
-}
-
-function sumNameValues(name: string): number {
-  return name
-    .replace(/[^a-zA-Z]/g, "")
-    .split("")
-    .reduce((sum, c) => sum + letterValue(c), 0);
-}
-
-const VOWELS = new Set(["A", "E", "I", "O", "U"]);
-
-function sumVowels(name: string): number {
-  return name
-    .replace(/[^a-zA-Z]/g, "")
-    .split("")
-    .filter((c) => VOWELS.has(c.toUpperCase()))
-    .reduce((sum, c) => sum + letterValue(c), 0);
-}
-
-function sumConsonants(name: string): number {
-  return name
-    .replace(/[^a-zA-Z]/g, "")
-    .split("")
-    .filter((c) => !VOWELS.has(c.toUpperCase()))
-    .reduce((sum, c) => sum + letterValue(c), 0);
+function reduceNonMaster(n: number): number {
+  while (n > 9) n = String(n).split('').reduce((s, d) => s + Number(d), 0);
+  return n;
 }
 
 export function calculateLifePath(birthDate: string): number {
-  const date = new Date(birthDate);
-  const month = reduceNumber(date.getMonth() + 1, false);
-  const day = reduceNumber(date.getDate(), false);
-  const year = reduceNumber(date.getFullYear(), false);
-  return reduceNumber(month + day + year);
+  const [y, m, d] = birthDate.split('-').map(Number);
+  const sum = reduceNonMaster(y) + reduceNonMaster(m) + reduceNonMaster(d);
+  return reduceToRoot(sum);
 }
 
-export function calculateDestiny(fullName: string): number {
-  return reduceNumber(sumNameValues(fullName));
+export function calculateDestinyNumber(name: string): number {
+  const pythagorean: Record<string, number> = {
+    a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9,
+    j: 1, k: 2, l: 3, m: 4, n: 5, o: 6, p: 7, q: 8, r: 9,
+    s: 1, t: 2, u: 3, v: 4, w: 5, x: 6, y: 7, z: 8,
+  };
+  const total = name
+    .toLowerCase()
+    .replace(/[^a-z]/g, '')
+    .split('')
+    .reduce((s, c) => s + (pythagorean[c] ?? 0), 0);
+  return reduceToRoot(total);
 }
 
-export function calculateSoulUrge(fullName: string): number {
-  return reduceNumber(sumVowels(fullName));
+export function calculateSoulUrge(name: string): number {
+  const pythagorean: Record<string, number> = {
+    a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9,
+    j: 1, k: 2, l: 3, m: 4, n: 5, o: 6, p: 7, q: 8, r: 9,
+    s: 1, t: 2, u: 3, v: 4, w: 5, x: 6, y: 7, z: 8,
+  };
+  const vowels = ['a', 'e', 'i', 'o', 'u'];
+  const total = name
+    .toLowerCase()
+    .replace(/[^a-z]/g, '')
+    .split('')
+    .filter((c) => vowels.includes(c))
+    .reduce((s, c) => s + (pythagorean[c] ?? 0), 0);
+  return reduceToRoot(total);
 }
 
-export function calculatePersonality(fullName: string): number {
-  return reduceNumber(sumConsonants(fullName));
+export function calculatePersonalityNumber(name: string): number {
+  const pythagorean: Record<string, number> = {
+    a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9,
+    j: 1, k: 2, l: 3, m: 4, n: 5, o: 6, p: 7, q: 8, r: 9,
+    s: 1, t: 2, u: 3, v: 4, w: 5, x: 6, y: 7, z: 8,
+  };
+  const vowels = ['a', 'e', 'i', 'o', 'u'];
+  const total = name
+    .toLowerCase()
+    .replace(/[^a-z]/g, '')
+    .split('')
+    .filter((c) => !vowels.includes(c))
+    .reduce((s, c) => s + (pythagorean[c] ?? 0), 0);
+  return reduceToRoot(total);
 }
 
-export function calculateBirthday(birthDate: string): number {
-  const day = new Date(birthDate).getDate();
-  return reduceNumber(day, false);
+export function calculateBirthdayNumber(birthDate: string): number {
+  const day = parseInt(birthDate.split('-')[2], 10);
+  return reduceToRoot(day);
 }
 
-export function calculateMaturity(lifePath: number, destiny: number): number {
-  return reduceNumber(lifePath + destiny);
-}
-
-export function calculateChallengeNumbers(birthDate: string): number[] {
-  const date = new Date(birthDate);
-  const m = reduceNumber(date.getMonth() + 1, false);
-  const d = reduceNumber(date.getDate(), false);
-  const y = reduceNumber(date.getFullYear(), false);
-  const y1 = Math.abs(m - d);
-  const y2 = Math.abs(d - y);
-  const y3 = Math.abs(y1 - y2);
-  const y4 = Math.abs(
-    reduceNumber(date.getMonth() + 1 + date.getFullYear(), false) -
-      reduceNumber(date.getDate(), false),
-  );
-  return [y1, y2, y3, y4].map((n) => reduceNumber(n, false));
-}
-
-export function calculateKarmicDebt(birthDate: string): number | null {
-  const lifePath = calculateLifePath(birthDate);
-  return [13, 14, 16, 19].includes(lifePath) ? lifePath : null;
-}
-
-export function calculatePinnacleCycles(birthDate: string): number[] {
-  const date = new Date(birthDate);
-  const m = reduceNumber(date.getMonth() + 1, false);
-  const d = reduceNumber(date.getDate(), false);
-  const y = reduceNumber(date.getFullYear(), false);
-  const lifePath = calculateLifePath(birthDate);
-
-  const first = reduceNumber(m + d);
-  const second = reduceNumber(d + y);
-  const third = reduceNumber(first + second);
-  const fourth = reduceNumber(m + y);
-
-  return [first, second, third, fourth];
+export function calculateMaturityNumber(lifePath: number, destiny: number): number {
+  return reduceToRoot(lifePath + destiny);
 }
 
 export function calculatePersonalYear(birthDate: string): number {
-  const now = new Date();
-  const date = new Date(birthDate);
-  const currentYear = now.getFullYear();
-  const m = date.getMonth() + 1;
-  const d = date.getDate();
-  return reduceNumber(m + d + currentYear);
+  const [y] = birthDate.split('-').map(Number);
+  const [_, m, d] = birthDate.split('-').map(Number);
+  const currentYear = new Date().getFullYear();
+  const sum = reduceNonMaster(m) + reduceNonMaster(d) + reduceNonMaster(currentYear);
+  return reduceToRoot(sum);
 }
 
 export function calculatePersonalMonth(birthDate: string): number {
-  const py = calculatePersonalYear(birthDate);
-  const month = new Date().getMonth() + 1;
-  return reduceNumber(py + month);
+  const personalYear = calculatePersonalYear(birthDate);
+  const currentMonth = new Date().getMonth() + 1;
+  return reduceToRoot(personalYear + currentMonth);
 }
 
 export function calculatePersonalDay(birthDate: string): number {
-  const pm = calculatePersonalMonth(birthDate);
-  const day = new Date().getDate();
-  return reduceNumber(pm + day);
+  const personalMonth = calculatePersonalMonth(birthDate);
+  const currentDay = new Date().getDate();
+  return reduceToRoot(personalMonth + currentDay);
 }
 
-export function calculateNumerology(
-  birthDate: string,
-  fullName: string,
-): NumerologyResult {
+export function calculateNumerology(birthDate: string, name: string): NumerologyResult {
+  return calculateAllNumerology(birthDate, name);
+}
+
+export function calculateAllNumerology(birthDate: string, name: string): NumerologyResult {
   const lifePath = calculateLifePath(birthDate);
-  const destiny = calculateDestiny(fullName);
-  const soulUrge = calculateSoulUrge(fullName);
-  const personality = calculatePersonality(fullName);
+  const destiny = calculateDestinyNumber(name);
+  const soulUrge = calculateSoulUrge(name);
+  const personality = calculatePersonalityNumber(name);
+  const birthday = calculateBirthdayNumber(birthDate);
+  const maturity = calculateMaturityNumber(lifePath, destiny);
+  const challengeNumbers = calculateChallengeNumbers(birthDate);
+  const karmicDebt = calculateKarmicDebt(birthDate, name);
+  const pinnacleCycles = calculatePinnacleCycles(birthDate);
+  const personalYear = calculatePersonalYear(birthDate);
+  const personalMonth = calculatePersonalMonth(birthDate);
+  const personalDay = calculatePersonalDay(birthDate);
 
   return {
-    lifePath,
-    destiny,
-    soulUrge,
-    personality,
-    birthday: calculateBirthday(birthDate),
-    maturity: calculateMaturity(lifePath, destiny),
-    challengeNumbers: calculateChallengeNumbers(birthDate),
-    karmicDebt: calculateKarmicDebt(birthDate),
-    pinnacleCycles: calculatePinnacleCycles(birthDate),
-    personalYear: calculatePersonalYear(birthDate),
-    personalMonth: calculatePersonalMonth(birthDate),
-    personalDay: calculatePersonalDay(birthDate),
+    lifePath, destiny, soulUrge, personality, birthday, maturity,
+    challengeNumbers, karmicDebt, pinnacleCycles, personalYear, personalMonth, personalDay,
   };
+}
+
+export function calculateChallengeNumbers(birthDate: string): number[] {
+  const [y, m, d] = birthDate.split('-').map(Number);
+  const a = reduceNonMaster(m);
+  const b = reduceNonMaster(d);
+  const c = reduceNonMaster(y);
+  const first = Math.abs(a - b);
+  const second = Math.abs(b - c);
+  const third = Math.abs(a - c);
+  return [first, second, third, Math.abs(first - second)];
+}
+
+export function calculateKarmicDebt(birthDate: string, name: string): number | null {
+  const debitNumbers = [13, 14, 16, 19];
+  const lifePath = calculateLifePath(birthDate);
+  const destiny = calculateDestinyNumber(name);
+  const combined = lifePath + destiny;
+  if (debitNumbers.includes(combined)) return combined;
+  if (debitNumbers.includes(lifePath)) return lifePath;
+  if (debitNumbers.includes(destiny)) return destiny;
+  return null;
+}
+
+export function calculatePinnacleCycles(birthDate: string): number[] {
+  const [y, m, d] = birthDate.split('-').map(Number);
+  const month = reduceNonMaster(m);
+  const day = reduceNonMaster(d);
+  const year = reduceNonMaster(y);
+  const first = reduceToRoot(month + day);
+  const second = reduceToRoot(day + year);
+  const third = reduceToRoot(first + second);
+  const fourth = reduceToRoot(month + year);
+  return [first, second, third, fourth];
 }

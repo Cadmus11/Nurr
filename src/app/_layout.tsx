@@ -24,6 +24,7 @@ export default function RootLayout() {
           }}
         >
           <Stack.Screen name="index" />
+          <Stack.Screen name="onboarding" />
           <Stack.Screen name="settings" />
           <Stack.Screen name="blueprint" />
           <Stack.Screen name="profiles" />
@@ -40,6 +41,13 @@ export default function RootLayout() {
           <Stack.Screen name="spirit-animals" />
           <Stack.Screen name="moon-calendar" />
           <Stack.Screen name="journal" />
+          <Stack.Screen name="enemy-years" />
+          <Stack.Screen name="planet-influence" />
+          <Stack.Screen name="element-balance" />
+          <Stack.Screen name="life-cycles" />
+          <Stack.Screen name="sacred-geometry" />
+          <Stack.Screen name="reports" />
+          <Stack.Screen name="desktop-widgets" />
           <Stack.Screen name="search" />
         </Stack>
       </View>

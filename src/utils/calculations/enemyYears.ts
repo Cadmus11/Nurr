@@ -18,7 +18,7 @@ const ALL_ANIMALS: ChineseZodiacAnimal[] = [
 
 export function getNeutralSigns(animal: ChineseZodiacAnimal): ChineseZodiacAnimal[] {
   const data = CHINESE_ZODIAC[animal];
-  const known = new Set([...data.friends, data.enemy, animal]);
+  const known = new Set([...data.friends, ...data.enemy, animal]);
   return ALL_ANIMALS.filter((a) => !known.has(a));
 }
 

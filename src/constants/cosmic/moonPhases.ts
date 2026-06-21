@@ -1,88 +1,118 @@
-import type { MoonPhase, MoonPhaseData } from '@/types/cosmic';
+import type { MoonPhaseData, MoonPhase } from '@/types/cosmic';
 
 export const MOON_PHASES: Record<MoonPhase, MoonPhaseData> = {
   "new-moon": {
     phase: "new-moon",
     title: "New Moon",
     symbol: "🌑",
-    interpretation: "A time of new beginnings, fresh starts, and planting seeds of intention. The sky is dark, ready to be filled with light. Set your intentions now for what you wish to grow.",
-    bestActivities: ["Setting intentions", "Starting new projects", "Dreaming and visioning", "Quiet reflection", "Planting seeds (literal or metaphorical)"],
-    energy: "Dark, receptive, inward — potent with unseen potential.",
+    interpretation: "The New Moon marks the beginning of the lunar cycle — a time of darkness, stillness, and potent new beginnings. Seeds of intention planted now will grow throughout the cycle. It is a time to rest, reflect, and set clear intentions for what you wish to manifest.",
+    bestActivities: [
+      "Setting intentions and goals for the month ahead",
+      "Starting new projects and ventures",
+      "Planting seeds — literally or metaphorically",
+      "Quiet reflection and meditation",
+      "Journaling about your deepest desires",
+    ],
+    energy: "Still, dark, introspective, potent with potential. The energy is inward and receptive — a time to listen rather than act.",
   },
   "waxing-crescent": {
     phase: "waxing-crescent",
     title: "Waxing Crescent",
     symbol: "🌒",
-    interpretation: "The first sliver of light returns. Hope and momentum build as your intentions begin to take form. Take the first concrete steps toward your goals.",
-    bestActivities: ["Taking initial action", "Building momentum", "Researching and learning", "Strengthening commitment", "Visualizing growth"],
-    energy: "Growing, hopeful, active — the spark of creation catches fire.",
+    interpretation: "A sliver of light returns to the sky. This is the phase of intention-taking-form. The seeds planted at the New Moon are beginning to sprout. Hope returns, and the first steps toward your goals are taken. Momentum is building.",
+    bestActivities: [
+      "Taking first steps toward your intentions",
+      "Researching and gathering information",
+      "Building momentum on new projects",
+      "Visualizing your goals coming to life",
+      "Making initial connections and introductions",
+    ],
+    energy: "Building, hopeful, initiating, fragile but growing. The energy is forward-moving but still gentle — nurture your beginnings.",
   },
   "first-quarter": {
     phase: "first-quarter",
-    title: "First Quarter",
+    title: "First Quarter Moon",
     symbol: "🌓",
-    interpretation: "Half illuminated, half dark. A time of decision, challenge, and commitment. Obstacles may appear to test your resolve. Push through with determination.",
-    bestActivities: ["Making decisions", "Overcoming obstacles", "Taking decisive action", "Committing to your path", "Problem-solving"],
-    energy: "Dynamic, challenging, decisive — the moment of choice and action.",
+    interpretation: "Half illuminated, the First Quarter Moon brings a crisis point or decision. Challenges arise that test your commitment to the intentions set at the New Moon. This is the phase of action, effort, and overcoming obstacles.",
+    bestActivities: [
+      "Taking decisive action on your goals",
+      "Overcoming obstacles and challenges",
+      "Making important decisions",
+      "Asserting yourself and your commitments",
+      "Adjusting plans based on early results",
+    ],
+    energy: "Active, challenging, decisive, momentum-building. The energy requires effort and determination — push through resistance.",
   },
   "waxing-gibbous": {
     phase: "waxing-gibbous",
-    title: "Waxing Gibbous",
+    title: "Waxing Gibbous Moon",
     symbol: "🌔",
-    interpretation: "Nearly full, almost there. Refine and adjust your approach. The goal is in sight — fine-tune your efforts and prepare for the culmination.",
-    bestActivities: ["Refining plans", "Adjusting strategies", "Seeking feedback", "Practicing patience", "Preparing for culmination"],
-    energy: "Refining, adjusting, anticipating — the final push before fullness.",
+    interpretation: "Nearly full, the Waxing Gibbous Moon is a time of refinement and preparation. You have come far since the New Moon, and now you fine-tune your approach. Adjust, perfect, and prepare for the illumination of the Full Moon.",
+    bestActivities: [
+      "Refining and perfecting your projects",
+      "Analyzing progress and making adjustments",
+      "Preparing for culmination and completion",
+      "Seeking feedback and guidance",
+      "Strengthening your skills and knowledge",
+    ],
+    energy: "Building, refining, anticipatory, analytical. The energy is about preparation and fine-tuning — get ready for the peak.",
   },
   "full-moon": {
     phase: "full-moon",
     title: "Full Moon",
     symbol: "🌕",
-    interpretation: "Peak illumination, culmination, and celebration. The full moon reveals what was hidden in darkness. Emotions run high. Harvest the fruits of your labor.",
-    bestActivities: ["Celebrating achievements", "Releasing what no longer serves", "Gratitude practices", "Group ceremonies", "Harvesting results"],
-    energy: "Illuminated, powerful, climactic — the peak of the lunar cycle.",
+    interpretation: "The Moon is fully illuminated — a time of culmination, clarity, and peak energy. What began at the New Moon now reaches its peak. Emotions run high, truths are revealed, and magical energy is at its strongest. Celebrate achievements and release what no longer serves you.",
+    bestActivities: [
+      "Celebrating achievements and milestones",
+      "Releasing what no longer serves you",
+      "Harvesting the results of your efforts",
+      "Performing rituals and ceremonies",
+      "Expressing gratitude for abundance",
+    ],
+    energy: "Peak, illuminated, emotional, powerful, climactic. The energy is at its maximum — harvest, celebrate, and release.",
   },
   "waning-gibbous": {
     phase: "waning-gibbous",
-    title: "Waning Gibbous",
+    title: "Waning Gibbous Moon",
     symbol: "🌖",
-    interpretation: "The light begins to fade, inviting gratitude and sharing. Give thanks for what you've received and share your bounty with others.",
-    bestActivities: ["Sharing knowledge", "Teaching others", "Expressing gratitude", "Giving back", "Reflecting on lessons"],
-    energy: "Thankful, generous, reflective — sharing the abundance before letting go.",
+    interpretation: "The light begins to fade, and the Waning Gibbous Moon is a time of gratitude, sharing, and teaching. You have harvested the lessons of the Full Moon. Now you share your wisdom, give thanks, and begin the slow process of letting go.",
+    bestActivities: [
+      "Sharing knowledge and teaching others",
+      "Expressing gratitude for what you have received",
+      "Giving back to your community",
+      "Processing and integrating lessons learned",
+      "Gentle completion of pending tasks",
+    ],
+    energy: "Thankful, sharing, winding down, reflective. The energy is about integration and generosity — pass on what you have learned.",
   },
   "last-quarter": {
     phase: "last-quarter",
-    title: "Last Quarter",
+    title: "Last Quarter Moon",
     symbol: "🌗",
-    interpretation: "Half light, half dark again. A time of release, forgiveness, and letting go. Surrender what no longer serves your highest good.",
-    bestActivities: ["Letting go", "Forgiveness practice", "Releasing attachments", "Cleansing and purging", "Surrender rituals"],
-    energy: "Releasing, forgiving, cleansing — the courage to let go.",
+    interpretation: "Half illuminated again, but now waning. The Last Quarter Moon is a time of release, forgiveness, and letting go. What is not serving your highest good falls away. This is a powerful time for clearing out the old to make space for the new cycle ahead.",
+    bestActivities: [
+      "Releasing old patterns and attachments",
+      "Forgiving yourself and others",
+      "Clearing clutter — physical, emotional, mental",
+      "Completing unfinished business",
+      "Resting and preparing for the new cycle",
+    ],
+    energy: "Releasing, clearing, forgiving, surrendering. The energy is about letting go — release with gratitude and trust.",
   },
   "waning-crescent": {
     phase: "waning-crescent",
-    title: "Waning Crescent",
+    title: "Waning Crescent Moon",
     symbol: "🌘",
-    interpretation: "The final sliver of light before darkness. Rest, surrender, and complete release. Trust the darkness — it is not empty but full of potential for the next cycle.",
-    bestActivities: ["Rest and recovery", "Dream work", "Surrender and trust", "Inner journeying", "Preparing for new cycle"],
-    energy: "Surrendering, resting, completing — the stillness before rebirth.",
+    interpretation: "The final sliver of light before darkness returns. The Waning Crescent Moon is the phase of surrender, rest, and deep healing. The cycle is complete. Rest in the darkness, integrate all that has happened, and trust the void before the new beginning.",
+    bestActivities: [
+      "Deep rest and rejuvenation",
+      "Meditation and spiritual reflection",
+      "Dreamwork and connecting with the subconscious",
+      "Surrendering to the unknown",
+      "Preparing quietly for the new cycle",
+    ],
+    energy: "Restful, surrendered, healing, dreamy. The energy is deeply inward — rest, heal, and trust the darkness before the new dawn.",
   },
 };
 
-export function getMoonPhase(year: number, month: number, day: number): MoonPhase {
-  const phase = getMoonPhaseNumber(year, month, day);
-  const phases: MoonPhase[] = [
-    "new-moon", "waxing-crescent", "first-quarter", "waxing-gibbous",
-    "full-moon", "waning-gibbous", "last-quarter", "waning-crescent",
-  ];
-  return phases[Math.floor(phase / 0.125) % 8];
-}
-
-function getMoonPhaseNumber(y: number, m: number, d: number): number {
-  let c = 0; let e = 0;
-  if (m < 3) { y--; m += 12; }
-  c = Math.floor(y / 100);
-  e = ((y % 19) * 11 + Math.floor((c - 17) / 25.5) + Math.floor(c / 4) + 8 + Math.floor(c / 3) - 5 - (3 * c)) % 30;
-  if (e < 0) e += 30;
-  const j = Math.floor(365.25 * (y + 4712)) + Math.floor(30.6 * (m + 1)) + d + (0.5 - (c / 4)) - c - 2260.5;
-  const n = (j - e - 1.5) / 29.530588;
-  return n - Math.floor(n);
-}
+export const MOON_PHASE_LIST: MoonPhaseData[] = Object.values(MOON_PHASES);
