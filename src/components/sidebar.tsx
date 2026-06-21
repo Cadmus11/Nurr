@@ -89,16 +89,17 @@ export function Sidebar() {
 
   return (
     <>
-      {sidebarOpen && (
-        <TouchableWithoutFeedback onPress={() => setSidebarOpen(false)}>
-          <Animated.View
-            style={[
-              styles.overlay,
-              { backgroundColor: theme.overlay, opacity: fadeAnim },
-            ]}
-          />
-        </TouchableWithoutFeedback>
-      )}
+      <TouchableWithoutFeedback
+        onPress={() => setSidebarOpen(false)}
+        pointerEvents={sidebarOpen ? 'auto' : 'none'}
+      >
+        <Animated.View
+          style={[
+            styles.overlay,
+            { backgroundColor: theme.overlay, opacity: fadeAnim },
+          ]}
+        />
+      </TouchableWithoutFeedback>
 
       <Animated.View
         style={[
@@ -112,14 +113,28 @@ export function Sidebar() {
         ]}
       >
         <View style={[styles.profileSection, { borderBottomColor: theme.border }]}>
-          <Text style={[styles.profileName, { color: theme.text }]}>
-            {activeProfile?.name ?? 'No Profile'}
-          </Text>
-          <Text style={[styles.profileSub, { color: theme.textSecondary }]}>
-            {profiles.length > 0
-              ? `${profiles.length} profile${profiles.length !== 1 ? 's' : ''}`
-              : 'No profiles yet'}
-          </Text>
+          <View style={styles.profileRow}>
+            <View style={styles.profileInfo}>
+              <Text style={[styles.profileName, { color: theme.text }]}>
+                {activeProfile?.name ?? 'No Profile'}
+              </Text>
+              <Text style={[styles.profileSub, { color: theme.textSecondary }]}>
+                {profiles.length > 0
+                  ? `${profiles.length} profile${profiles.length !== 1 ? 's' : ''}`
+                  : 'No profiles yet'}
+              </Text>
+            </View>
+            <Pressable
+              onPress={() => setSidebarOpen(false)}
+              style={({ pressed }) => [
+                styles.closeBtn,
+                { backgroundColor: pressed ? theme.surface : 'transparent' },
+              ]}
+              hitSlop={8}
+            >
+              <Text style={[styles.closeIcon, { color: theme.textSecondary }]}>✕</Text>
+            </Pressable>
+          </View>
         </View>
 
         <ScrollView
@@ -228,6 +243,14 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderBottomWidth: 1,
   },
+  profileRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  profileInfo: {
+    flex: 1,
+  },
   profileName: {
     fontSize: 20,
     fontWeight: '700',
@@ -235,6 +258,18 @@ const styles = StyleSheet.create({
   profileSub: {
     fontSize: 13,
     marginTop: 4,
+  },
+  closeBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 12,
+  },
+  closeIcon: {
+    fontSize: 18,
+    fontWeight: '600',
   },
   scroll: {
     flex: 1,

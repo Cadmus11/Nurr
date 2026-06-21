@@ -1,7 +1,6 @@
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { SymbolView } from 'expo-symbols';
 import { useTheme } from '@/hooks/use-theme';
 import { useAppStore } from '@/stores/app-store';
 import { TopBarHeight } from '@/constants/theme';
@@ -31,12 +30,7 @@ export function TopBar() {
           ]}
           hitSlop={8}
         >
-          <SymbolView
-            name="line.3.horizontal"
-            tintColor={theme.text}
-            size={22}
-            resizeMode="scaleAspectFit"
-          />
+          <Text style={[styles.icon, { color: theme.text }]}>☰</Text>
         </Pressable>
 
         <Pressable onPress={() => router.navigate('/')} style={styles.titleContainer}>
@@ -51,12 +45,7 @@ export function TopBar() {
           ]}
           hitSlop={8}
         >
-          <SymbolView
-            name="gearshape"
-            tintColor={theme.text}
-            size={22}
-            resizeMode="scaleAspectFit"
-          />
+          <Text style={[styles.icon, { color: theme.text }]}>⚙</Text>
         </Pressable>
       </View>
     </View>
@@ -90,5 +79,8 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     letterSpacing: 1,
     textTransform: 'lowercase',
+  },
+  icon: {
+    fontSize: 22,
   },
 });
