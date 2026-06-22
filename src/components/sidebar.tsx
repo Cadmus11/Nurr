@@ -89,15 +89,13 @@ export function Sidebar() {
 
   return (
     <>
-      <TouchableWithoutFeedback
-        onPress={() => setSidebarOpen(false)}
-        pointerEvents={sidebarOpen ? 'auto' : 'none'}
-      >
+      <TouchableWithoutFeedback onPress={() => setSidebarOpen(false)}>
         <Animated.View
           style={[
             styles.overlay,
             { backgroundColor: theme.overlay, opacity: fadeAnim },
           ]}
+          pointerEvents={sidebarOpen ? 'auto' : 'none'}
         />
       </TouchableWithoutFeedback>
 
