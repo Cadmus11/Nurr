@@ -11,6 +11,7 @@ import { RISING_SIGNS } from '@/constants/cosmic/risingSigns';
 import { CHINESE_ZODIAC, ELEMENT_MEANINGS } from '@/constants/cosmic/chineseZodiac';
 import { PLANET_LIST } from '@/constants/cosmic/planets';
 import { calculateSunSign, calculateRisingSign, calculateLifePath, calculateDestinyNumber, calculateSoulUrge, calculatePersonalityNumber, calculateChineseZodiac, calculateChineseElement, getMoonSign, getZodiacElement } from '@/utils/calculations';
+import { CosmicIcon } from '@/components/cosmic-icon';
 
 type AnalyticsTab = 'energy' | 'numerology' | 'elements';
 
@@ -108,7 +109,7 @@ export default function AnalyticsScreen() {
             onPress={readAnalysis}
             style={({ pressed }) => [styles.speakBtn, { backgroundColor: isSpeaking ? theme.accent + '30' : theme.card, borderColor: theme.cardBorder, opacity: pressed ? 0.7 : 1 }]}
           >
-            <Text style={[styles.speakIcon, { color: theme.accent }]}>{isSpeaking ? '⏹' : '🔊'}</Text>
+            <CosmicIcon name={isSpeaking ? 'StopCircle' : 'VolumeHigh'} size={22} color={theme.accent} />
           </Pressable>
         </View>
 
@@ -163,7 +164,7 @@ export default function AnalyticsScreen() {
               <View style={styles.barRow}>
                 <View style={{ flex: 1 }}>
                   <Text style={[styles.barLabel, { color: theme.accentGreen }]}>Strengths</Text>
-                  <View style={[styles.barTrack, { backgroundColor: theme.border }]}>
+                    <View style={[styles.barTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
                     <View style={[styles.barFill, { backgroundColor: theme.accentGreen, width: '70%' as any }]} />
                   </View>
                 </View>
@@ -171,7 +172,7 @@ export default function AnalyticsScreen() {
               <View style={styles.barRow}>
                 <View style={{ flex: 1 }}>
                   <Text style={[styles.barLabel, { color: theme.accentOrange }]}>Weaknesses</Text>
-                  <View style={[styles.barTrack, { backgroundColor: theme.border }]}>
+                  <View style={[styles.barTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
                     <View style={[styles.barFill, { backgroundColor: theme.accentOrange, width: '30%' as any }]} />
                   </View>
                 </View>
@@ -199,7 +200,7 @@ export default function AnalyticsScreen() {
                     <View key={item.label} style={styles.numItem}>
                       <Text style={[styles.numLabel, { color: theme.textSecondary }]}>{item.label}</Text>
                       <Text style={[styles.numValue, { color: NUMEROLOGY_COLORS[i % NUMEROLOGY_COLORS.length] }]}>{item.value}</Text>
-                      <View style={[styles.numBarTrack, { backgroundColor: theme.border }]}>
+                      <View style={[styles.numBarTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
                         <View style={[styles.numBarFill, { backgroundColor: NUMEROLOGY_COLORS[i % NUMEROLOGY_COLORS.length], width: `${pct}%` as any }]} />
                       </View>
                     </View>
@@ -243,7 +244,7 @@ export default function AnalyticsScreen() {
                       <Text style={[styles.elementLabel, { color: theme.text, fontWeight: el.isDominant ? '800' : '500' }]}>{capitalize(el.name)}</Text>
                       <Text style={[styles.elementScore, { color: el.isDominant ? theme.accent : theme.textSecondary }]}>{el.score}%</Text>
                     </View>
-                    <View style={[styles.elementBarTrack, { backgroundColor: theme.border }]}>
+                    <View style={[styles.elementBarTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
                       <View style={[styles.elementBarFill, { backgroundColor: ELEMENT_COLORS[el.name], width: `${el.score}%` as any }]} />
                     </View>
                     {el.isDominant && <Text style={[styles.dominantBadge, { color: theme.accent }]}>★ Dominant Element</Text>}
@@ -313,15 +314,15 @@ const styles = StyleSheet.create({
   traitText: { fontSize: 13, fontWeight: '600' },
   barRow: { gap: 4 },
   barLabel: { fontSize: 12, fontWeight: '600' },
-  barTrack: { height: 8, borderRadius: 4 },
-  barFill: { height: 8, borderRadius: 4 },
+  barTrack: { height: 10, borderRadius: 5, borderWidth: 0.5 },
+  barFill: { height: 10, borderRadius: 5 },
   bulletItem: { fontSize: 13, lineHeight: 20 },
   numGrid: { gap: 16 },
   numItem: { gap: 4 },
   numLabel: { fontSize: 12, fontWeight: '600' },
   numValue: { fontSize: 24, fontWeight: '800' },
-  numBarTrack: { height: 6, borderRadius: 3 },
-  numBarFill: { height: 6, borderRadius: 3 },
+  numBarTrack: { height: 10, borderRadius: 5, borderWidth: 0.5 },
+  numBarFill: { height: 10, borderRadius: 5 },
   distGrid: { flexDirection: 'row', justifyContent: 'space-between', height: 120, marginTop: 8 },
   distItem: { alignItems: 'center', gap: 4, flex: 1 },
   distNum: { fontSize: 13, fontWeight: '700' },
@@ -332,8 +333,8 @@ const styles = StyleSheet.create({
   elementDot: { width: 10, height: 10, borderRadius: 5 },
   elementLabel: { fontSize: 14, flex: 1 },
   elementScore: { fontSize: 14, fontWeight: '700' },
-  elementBarTrack: { height: 8, borderRadius: 4 },
-  elementBarFill: { height: 8, borderRadius: 4 },
+  elementBarTrack: { height: 10, borderRadius: 5, borderWidth: 0.5 },
+  elementBarFill: { height: 10, borderRadius: 5 },
   dominantBadge: { fontSize: 12, fontWeight: '700', marginTop: 2 },
   elementBreakdown: { gap: 10 },
   balanceItem: { borderRadius: 12, padding: Spacing.three, gap: 6 },

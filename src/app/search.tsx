@@ -10,12 +10,14 @@ import { ANGEL_NUMBERS } from '@/constants/cosmic/angelNumbers';
 import { DREAM_SYMBOLS } from '@/constants/cosmic/dreamSymbols';
 import { SPIRIT_ANIMALS } from '@/constants/cosmic/spiritAnimals';
 import { BIRTHSTONES } from '@/constants/cosmic/birthstones';
+import { CosmicIcon, type CosmicIconName } from '@/components/cosmic-icon';
 
 interface SearchResult {
   module: string;
   label: string;
   description: string;
-  icon: string;
+  icon?: CosmicIconName;
+  symbol?: string;
 }
 
 export default function SearchScreen() {
@@ -30,43 +32,43 @@ export default function SearchScreen() {
 
     Object.values(ZODIAC_SIGNS).forEach((z) => {
       if (z.sign.includes(q) || z.personality.some((p) => p.toLowerCase().includes(q)) || z.strengths.some((s) => s.toLowerCase().includes(q))) {
-        r.push({ module: 'Astrology', label: `${z.symbol} ${capitalize(z.sign)}`, description: z.dateRange, icon: z.symbol });
+        r.push({ module: 'Astrology', label: `${z.symbol} ${capitalize(z.sign)}`, description: z.dateRange, icon: 'Sun1', symbol: z.symbol });
       }
     });
 
     Object.entries(CHINESE_ZODIAC).forEach(([animal, data]) => {
       if (animal.includes(q) || data.traits.toLowerCase().includes(q)) {
-        r.push({ module: 'Chinese Zodiac', label: capitalize(animal), description: data.traits.slice(0, 100), icon: '🐉' });
+        r.push({ module: 'Chinese Zodiac', label: capitalize(animal), description: data.traits.slice(0, 100), icon: 'Pet' });
       }
     });
 
     TAROT_CARDS.forEach((card) => {
       if (card.name.toLowerCase().includes(q) || card.keywords.some((k) => k.includes(q)) || card.meaning.toLowerCase().includes(q)) {
-        r.push({ module: 'Tarot', label: card.name, description: card.meaning.slice(0, 100), icon: '▤' });
+        r.push({ module: 'Tarot', label: card.name, description: card.meaning.slice(0, 100), icon: 'Card' });
       }
     });
 
     ANGEL_NUMBERS.forEach((an) => {
       if (an.number.includes(q) || an.meaning.toLowerCase().includes(q)) {
-        r.push({ module: 'Angel Numbers', label: an.number, description: an.meaning.slice(0, 100), icon: '✧' });
+        r.push({ module: 'Angel Numbers', label: an.number, description: an.meaning.slice(0, 100), icon: 'Star1' });
       }
     });
 
     DREAM_SYMBOLS.forEach((ds) => {
       if (ds.symbol.toLowerCase().includes(q) || ds.traditionalMeaning.toLowerCase().includes(q) || ds.category.includes(q)) {
-        r.push({ module: 'Dreams', label: ds.symbol, description: ds.traditionalMeaning.slice(0, 100), icon: '☽' });
+        r.push({ module: 'Dreams', label: ds.symbol, description: ds.traditionalMeaning.slice(0, 100), icon: 'Moon' });
       }
     });
 
     SPIRIT_ANIMALS.forEach((sa) => {
       if (sa.animal.toLowerCase().includes(q) || sa.traits.some((t) => t.toLowerCase().includes(q))) {
-        r.push({ module: 'Spirit Animals', label: sa.animal, description: sa.lifeGuidance, icon: '🐾' });
+        r.push({ module: 'Spirit Animals', label: sa.animal, description: sa.lifeGuidance, icon: 'Pet' });
       }
     });
 
     BIRTHSTONES.forEach((bs) => {
       if (bs.stone.toLowerCase().includes(q)) {
-        r.push({ module: 'Birthstones', label: bs.stone, description: bs.meaning.slice(0, 100), icon: '💎' });
+        r.push({ module: 'Birthstones', label: bs.stone, description: bs.meaning.slice(0, 100), icon: 'Crown1' });
       }
     });
 
@@ -98,7 +100,7 @@ export default function SearchScreen() {
             {results.map((r, i) => (
               <View key={i} style={[styles.resultCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
                 <View style={styles.resultRow}>
-                  <Text style={[styles.resultIcon, { color: theme.accent }]}>{r.icon}</Text>
+                  {r.icon && <CosmicIcon name={r.icon} size={24} color={theme.accent} />}
                   <View style={{ flex: 1 }}>
                     <Text style={[styles.resultLabel, { color: theme.text }]}>{r.label}</Text>
                     <Text style={[styles.resultModule, { color: theme.accent }]}>{r.module}</Text>
@@ -137,6 +139,7 @@ const styles = StyleSheet.create({
   resultCard: { borderRadius: 12, borderWidth: 1, padding: Spacing.three },
   resultRow: { flexDirection: 'row', gap: 12 },
   resultIcon: { fontSize: 24, width: 32, textAlign: 'center' },
+  resultIconSvg: { width: 32, alignItems: 'center', justifyContent: 'center' },
   resultLabel: { fontSize: 16, fontWeight: '700' },
   resultModule: { fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.3, marginTop: 2 },
   resultDesc: { fontSize: 13, lineHeight: 18, marginTop: 4 },

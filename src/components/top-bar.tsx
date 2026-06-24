@@ -4,6 +4,7 @@ import { router } from 'expo-router';
 import { useTheme } from '@/hooks/use-theme';
 import { useAppStore } from '@/stores/app-store';
 import { TopBarHeight } from '@/constants/theme';
+import { CosmicIcon } from '@/components/cosmic-icon';
 
 export function TopBar() {
   const insets = useSafeAreaInsets();
@@ -30,7 +31,7 @@ export function TopBar() {
           ]}
           hitSlop={8}
         >
-          <Text style={[styles.icon, { color: theme.text }]}>☰</Text>
+          <CosmicIcon name="HambergerMenu" size={22} color={theme.text} />
         </Pressable>
 
         <Pressable onPress={() => router.navigate('/')} style={styles.titleContainer}>
@@ -45,7 +46,7 @@ export function TopBar() {
           ]}
           hitSlop={8}
         >
-          <Text style={[styles.icon, { color: theme.text }]}>⚙</Text>
+          <CosmicIcon name="Setting2" size={22} color={theme.text} />
         </Pressable>
       </View>
     </View>
@@ -82,5 +83,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     fontSize: 22,
+  },
+  iconSvg: {
+    width: 22,
+    height: 22,
   },
 });

@@ -7,12 +7,13 @@ import { Spacing } from '@/constants/theme';
 import { PLANETS, PLANET_LIST } from '@/constants/cosmic/planets';
 import { calculateSunSign } from '@/utils/calculations';
 import { ZODIAC_SIGNS } from '@/constants/cosmic/zodiac';
+import { CosmicIcon, type CosmicIconName } from '@/components/cosmic-icon';
 import type { PlanetName } from '@/types/cosmic';
 
-const PLANET_EMOJIS: Record<string, string> = {
-  sun: '☀️', moon: '🌙', mercury: '☿', venus: '♀',
-  mars: '♂', jupiter: '♃', saturn: '♄', uranus: '⛢',
-  neptune: '♆', pluto: '♇',
+const PLANET_ICONS: Record<string, CosmicIconName> = {
+  sun: 'Sun1', moon: 'Moon', mercury: 'MessageText1', venus: 'Heart',
+  mars: 'ShieldCross', jupiter: 'MagicStar', saturn: 'StopCircle', uranus: 'Flash',
+  neptune: 'Drop', pluto: 'Box',
 };
 
 export default function PlanetInfluenceScreen() {
@@ -42,7 +43,7 @@ export default function PlanetInfluenceScreen() {
           return (
             <View style={[styles.dominantCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
               <Text style={[styles.domLabel, { color: theme.textSecondary }]}>Your Dominant Planet</Text>
-              <Text style={styles.domEmoji}>{PLANET_EMOJIS[dominantPlanet]}</Text>
+              <CosmicIcon name={PLANET_ICONS[dominantPlanet]} size={48} color={theme.accent} />
               <Text style={[styles.domName, { color: theme.accent }]}>{p.title}</Text>
               <Text style={[styles.domInfluence, { color: theme.textSecondary }]}>{p.influence}</Text>
             </View>
@@ -57,7 +58,7 @@ export default function PlanetInfluenceScreen() {
               return (
                 <Pressable key={p.planet} onPress={() => setSelectedPlanet(p.planet)}
                   style={[styles.planetBtn, { backgroundColor: isActive ? p.color + '30' : theme.surface, borderColor: isActive ? p.color : theme.border }]}>
-                  <Text style={styles.planetEmoji}>{PLANET_EMOJIS[p.planet]}</Text>
+                  <CosmicIcon name={PLANET_ICONS[p.planet]} size={22} color={isActive ? p.color : theme.textSecondary} />
                   <Text style={[styles.planetLabel, { color: isActive ? p.color : theme.text, fontWeight: isActive ? '700' : '500' }]}>{p.title}</Text>
                   <Text style={[styles.planetDay, { color: theme.textTertiary }]}>{p.day}</Text>
                 </Pressable>
@@ -101,7 +102,7 @@ export default function PlanetInfluenceScreen() {
                 </View>
                 <View style={[styles.miniCard, { backgroundColor: theme.card, borderColor: theme.cardBorder, flex: 1 }]}>
                   <Text style={[styles.miniLabel, { color: theme.textSecondary }]}>Day</Text>
-                  <Text style={[styles.miniEmoji, { color: theme.text }]}>📅</Text>
+                  <CosmicIcon name="Calendar" size={24} color={theme.text} />
                   <Text style={[styles.miniValue, { color: theme.text }]}>{planetData.day}</Text>
                 </View>
               </View>
@@ -121,12 +122,10 @@ const styles = StyleSheet.create({
   sectionLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 4 },
   dominantCard: { borderRadius: 16, borderWidth: 1, padding: Spacing.four, alignItems: 'center', gap: 8 },
   domLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
-  domEmoji: { fontSize: 48 },
   domName: { fontSize: 24, fontWeight: '900' },
   domInfluence: { fontSize: 14, lineHeight: 20, textAlign: 'center' },
   planetRow: { flexDirection: 'row', gap: 8, paddingVertical: 4 },
   planetBtn: { alignItems: 'center', gap: 4, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 10, borderWidth: 1 },
-  planetEmoji: { fontSize: 24 },
   planetLabel: { fontSize: 11, fontWeight: '600' },
   planetDay: { fontSize: 9 },
   headerCard: { borderRadius: 14, borderWidth: 1, padding: Spacing.four, alignItems: 'center', gap: 8 },
@@ -140,6 +139,6 @@ const styles = StyleSheet.create({
   miniCard: { borderRadius: 12, borderWidth: 1, padding: Spacing.three, alignItems: 'center', gap: 6 },
   miniLabel: { fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
   colorDot: { width: 32, height: 32, borderRadius: 16 },
-  miniEmoji: { fontSize: 24 },
+
   miniValue: { fontSize: 14, fontWeight: '600' },
 });

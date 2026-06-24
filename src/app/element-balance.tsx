@@ -7,9 +7,10 @@ import { Spacing } from '@/constants/theme';
 import { ELEMENTS, ELEMENT_LIST } from '@/constants/cosmic/elements';
 import { calculateSunSign } from '@/utils/calculations';
 import { ZODIAC_SIGNS } from '@/constants/cosmic/zodiac';
+import { CosmicIcon } from '@/components/cosmic-icon';
 import type { ZodiacElement } from '@/types/cosmic';
 
-const ELEMENT_EMOJIS: Record<string, string> = { fire: '🔥', earth: '🌍', air: '💨', water: '🌊' };
+const ELEMENT_ICONS: Record<string, 'Flash' | 'Global' | 'Wind2' | 'Drop'> = { fire: 'Flash', earth: 'Global', air: 'Wind2', water: 'Drop' };
 
 export default function ElementBalanceScreen() {
   const insets = useSafeAreaInsets();
@@ -43,7 +44,7 @@ export default function ElementBalanceScreen() {
         {activeProfile && profileElement && (
           <View style={[styles.profileCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
             <Text style={[styles.profileLabel, { color: theme.textSecondary }]}>Your Dominant Element</Text>
-            <Text style={styles.profileEmoji}>{ELEMENT_EMOJIS[profileElement]}</Text>
+            <CosmicIcon name={ELEMENT_ICONS[profileElement]} size={56} color={theme.accent} />
             <Text style={[styles.profileName, { color: theme.accent }]}>{capitalize(profileElement)}</Text>
             {weakElement && (
               <Text style={[styles.profileWeak, { color: theme.accentOrange }]}>Weak Element: {capitalize(weakElement)}</Text>
@@ -61,7 +62,7 @@ export default function ElementBalanceScreen() {
                   backgroundColor: isActive ? theme.accent : theme.surface,
                   borderColor: isActive ? theme.accent : theme.border,
                 }]}>
-                <Text style={styles.elementEmoji}>{ELEMENT_EMOJIS[el.element]}</Text>
+                <CosmicIcon name={ELEMENT_ICONS[el.element]} size={24} color={isActive ? '#fff' : theme.accent} />
                 <Text style={[styles.elementLabel, { color: isActive ? '#fff' : theme.text, fontWeight: isActive ? '700' : '500' }]}>
                   {capitalize(el.element)}
                 </Text>
@@ -121,12 +122,10 @@ const styles = StyleSheet.create({
   sectionLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5, marginTop: 4 },
   profileCard: { borderRadius: 16, borderWidth: 1, padding: Spacing.four, alignItems: 'center', gap: 8 },
   profileLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
-  profileEmoji: { fontSize: 56 },
   profileName: { fontSize: 24, fontWeight: '900' },
   profileWeak: { fontSize: 14, fontWeight: '600' },
   elementRow: { flexDirection: 'row', gap: 8 },
   elementBtn: { flex: 1, alignItems: 'center', gap: 4, paddingVertical: 12, borderRadius: 10, borderWidth: 1 },
-  elementEmoji: { fontSize: 24 },
   elementLabel: { fontSize: 12, fontWeight: '600' },
   card: { borderRadius: 12, borderWidth: 1, padding: Spacing.three, gap: 6 },
   cardLabel: { fontSize: 11, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 2 },

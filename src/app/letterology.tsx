@@ -114,7 +114,7 @@ export default function LetterologyScreen() {
                 <View key={i} style={[styles.letterRow, { borderBottomColor: theme.borderLight }]}>
                   <Text style={[styles.letterChar, { color: theme.text }]}>{v.letter.toUpperCase()}</Text>
                   <Text style={[styles.letterEq, { color: theme.textSecondary }]}>= {v.value}</Text>
-                  <View style={[styles.letterBar, { backgroundColor: theme.accent + '20' }]}>
+                  <View style={[styles.letterBar, { backgroundColor: theme.accent + '20', borderColor: theme.border }]}>
                     <View style={[styles.letterFill, { backgroundColor: theme.accent, width: `${(v.value / (system === 'chaldean' ? 8 : 9)) * 100}%` as any }]} />
                   </View>
                 </View>
@@ -154,8 +154,8 @@ const styles = StyleSheet.create({
   letterRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingVertical: 6, borderBottomWidth: 1 },
   letterChar: { fontSize: 18, fontWeight: '800', width: 24 },
   letterEq: { fontSize: 13, fontWeight: '600', width: 30 },
-  letterBar: { flex: 1, height: 8, borderRadius: 4, overflow: 'hidden' },
-  letterFill: { height: 8, borderRadius: 4 },
+  letterBar: { flex: 1, height: 10, borderRadius: 5, borderWidth: 0.5, overflow: 'hidden' },
+  letterFill: { height: 10, borderRadius: 5 },
   letterTotal: { flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10, borderTopWidth: 1, marginTop: 4 },
   totalLabel: { fontSize: 16, fontWeight: '700' },
   totalValue: { fontSize: 16, fontWeight: '800' },

@@ -5,11 +5,12 @@ import { router } from 'expo-router';
 import { useTheme } from '@/hooks/use-theme';
 import { Spacing } from '@/constants/theme';
 import { useAppStore } from '@/stores/app-store';
+import { CosmicIcon, type CosmicIconName } from '@/components/cosmic-icon';
 
 interface Step {
   title: string;
   subtitle: string;
-  emoji: string;
+  icon: CosmicIconName;
   description: string;
   features?: string[];
 }
@@ -18,28 +19,28 @@ const STEPS: Step[] = [
   {
     title: 'Welcome to Cosmic Oracle',
     subtitle: 'Your Personal Spiritual Intelligence Platform',
-    emoji: '🌌',
+    icon: 'MagicStar',
     description: 'Discover the cosmos within you. Cosmic Oracle is a fully offline, privacy-first spiritual platform that combines numerology, astrology, tarot, and more — all generated locally on your device.',
     features: ['No internet required', '100% private — no data leaves your device', 'Unlimited profiles for family & friends'],
   },
   {
     title: 'Create Your Profile',
     subtitle: 'Your cosmic journey begins here',
-    emoji: '👤',
+    icon: 'Profile',
     description: 'Start by creating a profile with your birth details. You can create multiple profiles for yourself, partners, family members, or friends — all stored securely on your device.',
     features: ['Enter name, birth date, time & location', 'Multiple profile types: Self, Partner, Friend, Child, Family, Client', 'Switch between profiles instantly'],
   },
   {
     title: 'Explore Your Cosmos',
     subtitle: 'Everything at your fingertips',
-    emoji: '✨',
+    icon: 'Star1',
     description: 'Dive into your Cosmic Blueprint — a complete spiritual profile that includes your Sun Sign, Moon Sign, Rising Sign, Chinese Zodiac, Life Path Number, and more.',
     features: ['Western & Chinese Astrology', 'Numerology, Tarot & Angel Numbers', 'Dream Interpretation & Spirit Animals', 'Compatibility Analysis & Forecasts'],
   },
   {
     title: 'Ready to Begin',
     subtitle: 'The universe is waiting',
-    emoji: '🚀',
+    icon: 'Send2',
     description: 'You now have everything you need to explore your cosmic self. Start by creating your first profile, then discover your complete spiritual blueprint.',
   },
 ];
@@ -82,7 +83,7 @@ export default function OnboardingScreen() {
         </View>
 
         <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-          <Text style={styles.emoji}>{current.emoji}</Text>
+          <CosmicIcon name={current.icon} size={72} color={theme.accent} />
           <Text style={[styles.title, { color: theme.text }]}>{current.title}</Text>
           <Text style={[styles.subtitle, { color: theme.accent }]}>{current.subtitle}</Text>
           <Text style={[styles.description, { color: theme.textSecondary }]}>{current.description}</Text>
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
   stepIndicator: { flexDirection: 'row', justifyContent: 'center', gap: 8 },
   dot: { width: 10, height: 10, borderRadius: 5 },
   card: { borderRadius: 20, borderWidth: 1, padding: Spacing.four, alignItems: 'center', gap: 12 },
-  emoji: { fontSize: 72 },
+
   title: { fontSize: 24, fontWeight: '900', textAlign: 'center' },
   subtitle: { fontSize: 15, fontWeight: '600', textAlign: 'center' },
   description: { fontSize: 15, lineHeight: 22, textAlign: 'center' },

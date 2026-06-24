@@ -6,14 +6,15 @@ import { useTheme } from '@/hooks/use-theme';
 import { useProfileStore } from '@/stores/profile-store';
 import { Spacing } from '@/constants/theme';
 import { getDailyMessage, calculateEnergyScore } from '@/utils/calculations';
+import { CosmicIcon, type CosmicIconName } from '@/components/cosmic-icon';
 
-const QUICK_ACTIONS = [
-  { label: 'Cosmic Blueprint', icon: '✦', route: '/blueprint', color: '#3b82f6' },
-  { label: 'Numerology', icon: '🔢', route: '/numerology', color: '#f97316' },
-  { label: 'Tarot', icon: '▤', route: '/tarot', color: '#8b5cf6' },
-  { label: 'Widgets', icon: '🔲', route: '/widgets', color: '#14b8a6' },
-  { label: 'Analytics', icon: '📊', route: '/analytics', color: '#6366f1' },
-  { label: 'Forecast', icon: '📈', route: '/forecast', color: '#f59e0b' },
+const QUICK_ACTIONS: { label: string; icon: CosmicIconName; route: string; color: string }[] = [
+  { label: 'Cosmic Blueprint', icon: 'MagicStar', route: '/blueprint', color: '#3b82f6' },
+  { label: 'Numerology', icon: 'Hashtag', route: '/numerology', color: '#f97316' },
+  { label: 'Tarot', icon: 'Card', route: '/tarot', color: '#8b5cf6' },
+  { label: 'Widgets', icon: 'Element2', route: '/widgets', color: '#14b8a6' },
+  { label: 'Analytics', icon: 'Chart2', route: '/analytics', color: '#6366f1' },
+  { label: 'Forecast', icon: 'TrendUp', route: '/forecast', color: '#f59e0b' },
 ];
 
 export default function HomeScreen() {
@@ -109,10 +110,10 @@ export default function HomeScreen() {
                 <Text style={[styles.energyBarLabel, { color: theme.textSecondary }]}>
                   {capitalize(cat)}
                 </Text>
-                <View style={[styles.energyBarTrack, { backgroundColor: theme.border }]}>
-                  <View
-                    style={[
-                      styles.energyBarFill,
+                  <View style={[styles.energyBarTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>  
+                    <View
+                      style={[
+                        styles.energyBarFill,
                       {
                         backgroundColor: getLevelColor(energy[cat]),
                         width: `${getLevelValue(energy[cat]) * 100}%` as any,
@@ -152,9 +153,7 @@ export default function HomeScreen() {
             ]}
           >
             <View style={[styles.gridIcon, { backgroundColor: action.color + '20' }]}>
-              <Text style={[styles.gridIconText, { color: action.color }]}>
-                {action.icon}
-              </Text>
+              <CosmicIcon name={action.icon} size={22} color={action.color} />
             </View>
             <Text style={[styles.gridLabel, { color: theme.text }]}>
               {action.label}
@@ -302,12 +301,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   energyBarTrack: {
-    height: 6,
-    borderRadius: 3,
+    height: 10,
+    borderRadius: 5,
+    borderWidth: 0.5,
   },
   energyBarFill: {
-    height: 6,
-    borderRadius: 3,
+    height: 10,
+    borderRadius: 5,
   },
   sectionTitle: {
     fontSize: 20,
@@ -333,9 +333,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  gridIconText: {
-    fontSize: 22,
-  },
+
   gridLabel: {
     fontSize: 15,
     fontWeight: '600',

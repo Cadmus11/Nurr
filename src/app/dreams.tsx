@@ -4,6 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@/hooks/use-theme';
 import { Spacing } from '@/constants/theme';
 import { DREAM_SYMBOLS } from '@/constants/cosmic/dreamSymbols';
+import { CosmicIcon } from '@/components/cosmic-icon';
 import type { DreamCategory } from '@/types/cosmic';
 
 const CATEGORIES: { key: DreamCategory; label: string; icon: string }[] = [
@@ -71,7 +72,7 @@ export default function DreamsScreen() {
 
         {category && (
           <Pressable onPress={() => setCategory(null)} style={[styles.clearBtn, { backgroundColor: theme.accent + '20' }]}>
-            <Text style={[styles.clearText, { color: theme.accent }]}>✕ {CATEGORIES.find((c) => c.key === category)?.label}</Text>
+            <View style={styles.clearRow}><CosmicIcon name="CloseCircle" size={16} color={theme.accent} /><Text style={[styles.clearText, { color: theme.accent }]}> {CATEGORIES.find((c) => c.key === category)?.label}</Text></View>
           </Pressable>
         )}
 
@@ -104,6 +105,7 @@ const styles = StyleSheet.create({
   catBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 14, paddingVertical: 10, borderRadius: 10, borderWidth: 1 },
   catIcon: { fontSize: 16 },
   catLabel: { fontSize: 13, fontWeight: '600' },
+  clearRow: { flexDirection: 'row', alignItems: 'center' },
   clearBtn: { paddingVertical: 8, paddingHorizontal: 14, borderRadius: 8, alignSelf: 'flex-start' },
   clearText: { fontSize: 13, fontWeight: '600' },
   symbolCard: { borderRadius: 14, borderWidth: 1, padding: Spacing.three, gap: 6 },

@@ -14,43 +14,44 @@ import { useTheme } from '@/hooks/use-theme';
 import { useAppStore } from '@/stores/app-store';
 import { useProfileStore } from '@/stores/profile-store';
 import { SidebarWidth } from '@/constants/theme';
+import { CosmicIcon, type CosmicIconName } from '@/components/cosmic-icon';
 import type { CosmicModule } from '@/types/cosmic';
 
 interface NavItem {
   module: CosmicModule;
   label: string;
-  icon: string;
+  icon: CosmicIconName;
   route: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { module: 'home', label: 'Home', icon: 'house', route: '/' },
-  { module: 'blueprint', label: 'Cosmic Blueprint', icon: 'sparkles', route: '/blueprint' },
-  { module: 'profile', label: 'Profiles', icon: 'person.2', route: '/profiles' },
-  { module: 'onboarding', label: 'Onboarding', icon: 'hand.wave', route: '/onboarding' },
-  { module: 'enemy-years', label: 'Enemy Years', icon: 'shield', route: '/enemy-years' },
-  { module: 'planet-influence', label: 'Planets', icon: 'globe', route: '/planet-influence' },
-  { module: 'element-balance', label: 'Element Balance', icon: 'drop', route: '/element-balance' },
-  { module: 'life-cycles', label: 'Life Cycles', icon: 'infinity', route: '/life-cycles' },
-  { module: 'sacred-geometry', label: 'Sacred Geometry', icon: 'hexagon', route: '/sacred-geometry' },
-  { module: 'reports', label: 'Reports', icon: 'doc.text', route: '/reports' },
-  { module: 'widgets', label: 'Widgets', icon: 'square.grid.2x2', route: '/widgets' },
-  { module: 'analytics', label: 'Analytics', icon: 'chart.bar', route: '/analytics' },
-  { module: 'desktop-widgets', label: 'Desktop App', icon: 'desktopcomputer', route: '/desktop-widgets' },
-  { module: 'numerology', label: 'Numerology', icon: 'number', route: '/numerology' },
-  { module: 'astrology', label: 'Astrology', icon: 'sun.max', route: '/astrology' },
-  { module: 'tarot', label: 'Tarot', icon: 'rectangle.3.group', route: '/tarot' },
-  { module: 'angel-numbers', label: 'Angel Numbers', icon: 'sparkle', route: '/angel-numbers' },
-  { module: 'compatibility', label: 'Compatibility', icon: 'heart', route: '/compatibility' },
-  { module: 'forecast', label: 'Forecast', icon: 'chart.line.uptrend.xyaxis', route: '/forecast' },
-  { module: 'letterology', label: 'Letterology', icon: 'abc', route: '/letterology' },
-  { module: 'dreams', label: 'Dreams', icon: 'moon', route: '/dreams' },
-  { module: 'chakras', label: 'Chakras', icon: 'circle.hexagonpath', route: '/chakras' },
-  { module: 'spirit-animals', label: 'Spirit Animals', icon: 'pawprint', route: '/spirit-animals' },
-  { module: 'moon-calendar', label: 'Moon Calendar', icon: 'calendar', route: '/moon-calendar' },
-  { module: 'journal', label: 'Journal', icon: 'book', route: '/journal' },
-  { module: 'settings', label: 'Settings', icon: 'gearshape', route: '/settings' },
-  { module: 'search', label: 'Search', icon: 'magnifyingglass', route: '/search' },
+  { module: 'home', label: 'Home', icon: 'Home2', route: '/' },
+  { module: 'blueprint', label: 'Cosmic Blueprint', icon: 'MagicStar', route: '/blueprint' },
+  { module: 'profile', label: 'Profiles', icon: 'Profile2User', route: '/profiles' },
+  { module: 'onboarding', label: 'Onboarding', icon: 'InfoCircle', route: '/onboarding' },
+  { module: 'enemy-years', label: 'Enemy Years', icon: 'ShieldCross', route: '/enemy-years' },
+  { module: 'planet-influence', label: 'Planets', icon: 'Global', route: '/planet-influence' },
+  { module: 'element-balance', label: 'Element Balance', icon: 'Drop', route: '/element-balance' },
+  { module: 'life-cycles', label: 'Life Cycles', icon: 'Refresh', route: '/life-cycles' },
+  { module: 'sacred-geometry', label: 'Sacred Geometry', icon: 'Box', route: '/sacred-geometry' },
+  { module: 'reports', label: 'Reports', icon: 'Book1', route: '/reports' },
+  { module: 'widgets', label: 'Widgets', icon: 'Element2', route: '/widgets' },
+  { module: 'analytics', label: 'Analytics', icon: 'Chart2', route: '/analytics' },
+  { module: 'desktop-widgets', label: 'Desktop App', icon: 'Monitor', route: '/desktop-widgets' },
+  { module: 'numerology', label: 'Numerology', icon: 'Hashtag', route: '/numerology' },
+  { module: 'astrology', label: 'Astrology', icon: 'Sun1', route: '/astrology' },
+  { module: 'tarot', label: 'Tarot', icon: 'Card', route: '/tarot' },
+  { module: 'angel-numbers', label: 'Angel Numbers', icon: 'Star1', route: '/angel-numbers' },
+  { module: 'compatibility', label: 'Compatibility', icon: 'Heart', route: '/compatibility' },
+  { module: 'forecast', label: 'Forecast', icon: 'TrendUp', route: '/forecast' },
+  { module: 'letterology', label: 'Letterology', icon: 'Text', route: '/letterology' },
+  { module: 'dreams', label: 'Dreams', icon: 'Moon', route: '/dreams' },
+  { module: 'chakras', label: 'Chakras', icon: 'OmegaCircle', route: '/chakras' },
+  { module: 'spirit-animals', label: 'Spirit Animals', icon: 'Pet', route: '/spirit-animals' },
+  { module: 'moon-calendar', label: 'Moon Calendar', icon: 'Calendar1', route: '/moon-calendar' },
+  { module: 'journal', label: 'Journal', icon: 'Book1', route: '/journal' },
+  { module: 'settings', label: 'Settings', icon: 'Setting2', route: '/settings' },
+  { module: 'search', label: 'Search', icon: 'SearchNormal1', route: '/search' },
 ];
 
 export function Sidebar() {
@@ -157,9 +158,9 @@ export function Sidebar() {
                   },
                 ]}
               >
-                <Text style={[styles.navIcon, { color: isActive ? '#ffffff' : theme.textSecondary }]}>
-                  {getIconSymbol(item.icon)}
-                </Text>
+                <View style={styles.navIcon}>
+                  <CosmicIcon name={item.icon} size={20} color={isActive ? '#ffffff' : theme.textSecondary} />
+                </View>
                 <Text
                   style={[
                     styles.navLabel,
@@ -180,38 +181,7 @@ export function Sidebar() {
   );
 }
 
-function getIconSymbol(icon: string): string {
-  const map: Record<string, string> = {
-    house: '⌂',
-    sparkles: '✦',
-    'person.2': '👥',
-    number: '🔢',
-    'sun.max': '☀',
-    'rectangle.3.group': '▤',
-    sparkle: '✧',
-    heart: '♥',
-    'chart.line.uptrend.xyaxis': '📈',
-    abc: 'A',
-    moon: '☽',
-    'circle.hexagonpath': '◎',
-    pawprint: '🐾',
-    calendar: '📅',
-    book: '📖',
-    gearshape: '⚙',
-    magnifyingglass: '🔍',
-    'hand.wave': '👋',
-    shield: '🛡',
-    globe: '🌍',
-    drop: '💧',
-    infinity: '∞',
-    hexagon: '⬡',
-    'doc.text': '📄',
-    'square.grid.2x2': '🔲',
-    'chart.bar': '📊',
-    desktopcomputer: '🖥',
-  };
-  return map[icon] ?? '●';
-}
+
 
 const styles = StyleSheet.create({
   overlay: {
@@ -285,9 +255,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   navIcon: {
-    fontSize: 18,
     width: 28,
-    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   navLabel: {
     fontSize: 15,

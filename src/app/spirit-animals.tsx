@@ -6,6 +6,7 @@ import { useProfileStore } from '@/stores/profile-store';
 import { Spacing } from '@/constants/theme';
 import { SPIRIT_ANIMALS } from '@/constants/cosmic/spiritAnimals';
 import { calculateSpiritAnimal } from '@/utils/calculations';
+import { CosmicIcon, type CosmicIconName } from '@/components/cosmic-icon';
 
 const ANIMAL_EMOJIS: Record<string, string> = {
   Wolf: '🐺', Eagle: '🦅', Lion: '🦁', Fox: '🦊', Owl: '🦉',
@@ -14,8 +15,8 @@ const ANIMAL_EMOJIS: Record<string, string> = {
   Phoenix: '🔥',
 };
 
-const ELEMENT_SYMBOLS: Record<string, string> = {
-  Fire: '🔥', Water: '💧', Earth: '🌍', Air: '💨',
+const ELEMENT_ICONS: Record<string, CosmicIconName> = {
+  Fire: 'Flash', Water: 'Drop', Earth: 'Global', Air: 'Wind2',
 };
 
 export default function SpiritAnimalsScreen() {
@@ -47,7 +48,7 @@ export default function SpiritAnimalsScreen() {
               <Text style={[styles.animalName, { color: theme.accent }]}>{spiritAnimal.animal}</Text>
               <View style={styles.tagRow}>
                 <View style={[styles.elementTag, { backgroundColor: theme.accent + '20', borderColor: theme.accent + '30' }]}>
-                  <Text style={styles.elementIcon}>{ELEMENT_SYMBOLS[spiritAnimal.element] ?? '✦'}</Text>
+                  <CosmicIcon name={ELEMENT_ICONS[spiritAnimal.element] ?? 'Star1'} size={14} color={theme.accent} />
                   <Text style={[styles.elementText, { color: theme.accent }]}>{spiritAnimal.element}</Text>
                 </View>
                 <View style={[styles.elementTag, { backgroundColor: theme.accent + '20', borderColor: theme.accent + '30' }]}>
@@ -88,7 +89,10 @@ export default function SpiritAnimalsScreen() {
                   <View key={animal.animal} style={[styles.gridCard, { backgroundColor: theme.card, borderColor: isYours ? theme.accent : theme.cardBorder }]}>
                     <Text style={styles.gridEmoji}>{ANIMAL_EMOJIS[animal.animal] ?? '🐾'}</Text>
                     <Text style={[styles.gridName, { color: isYours ? theme.accent : theme.text, fontWeight: isYours ? '700' : '600' }]}>{animal.animal}</Text>
-                    <Text style={[styles.gridElement, { color: theme.textTertiary }]}>{ELEMENT_SYMBOLS[animal.element] ?? '✦'} {animal.element}</Text>
+                    <View style={styles.gridElementRow}>
+                      <CosmicIcon name={ELEMENT_ICONS[animal.element] ?? 'Star1'} size={10} color={theme.textTertiary} />
+                      <Text style={[styles.gridElement, { color: theme.textTertiary }]}> {animal.element}</Text>
+                    </View>
                     {isYours && <View style={[styles.yourBadge, { backgroundColor: theme.accent }]}><Text style={styles.yourBadgeText}>YOURS</Text></View>}
                   </View>
                 );
@@ -117,7 +121,7 @@ const styles = StyleSheet.create({
   animalMessage: { fontSize: 15, lineHeight: 22, textAlign: 'center', fontStyle: 'italic', marginTop: 4 },
   tagRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'center' },
   elementTag: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingVertical: 4, paddingHorizontal: 10, borderRadius: 8, borderWidth: 1 },
-  elementIcon: { fontSize: 14 },
+  gridElementRow: { flexDirection: 'row', alignItems: 'center' },
   elementText: { fontSize: 12, fontWeight: '600' },
   tag: { paddingVertical: 4, paddingHorizontal: 10, borderRadius: 8, borderWidth: 1 },
   tagText: { fontSize: 12, fontWeight: '600' },

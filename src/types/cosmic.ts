@@ -113,6 +113,14 @@ export interface ChineseZodiacData {
   traits: string;
   bestYears: number[];
   challengingYears: number[];
+  clothingBrands: string[];
+  carBrands: string[];
+  luxuryBrands: string[];
+  accessoryBrands: string[];
+  watchBrands: string[];
+  shoeBrands: string[];
+  techBrands: string[];
+  fragranceBrands: string[];
 }
 
 // --- Numerology ---

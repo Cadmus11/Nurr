@@ -12,15 +12,16 @@ import { router } from 'expo-router';
 import { useTheme } from '@/hooks/use-theme';
 import { useProfileStore } from '@/stores/profile-store';
 import { Spacing } from '@/constants/theme';
+import { CosmicIcon, type CosmicIconName } from '@/components/cosmic-icon';
 import type { Profile, ProfileType } from '@/types/cosmic';
 
-const PROFILE_TYPES: { key: ProfileType; label: string; emoji: string }[] = [
-  { key: 'self', label: 'Self', emoji: '🧑' },
-  { key: 'partner', label: 'Partner', emoji: '💑' },
-  { key: 'friend', label: 'Friend', emoji: '🤝' },
-  { key: 'child', label: 'Child', emoji: '👶' },
-  { key: 'family', label: 'Family', emoji: '👨‍👩‍👧‍👦' },
-  { key: 'client', label: 'Client', emoji: '💼' },
+const PROFILE_TYPES: { key: ProfileType; label: string; icon: CosmicIconName }[] = [
+  { key: 'self', label: 'Self', icon: 'Profile' },
+  { key: 'partner', label: 'Partner', icon: 'Heart' },
+  { key: 'friend', label: 'Friend', icon: 'Profile2User' },
+  { key: 'child', label: 'Child', icon: 'UserOctagon' },
+  { key: 'family', label: 'Family', icon: 'Home2' },
+  { key: 'client', label: 'Client', icon: 'Briefcase' },
 ];
 
 export default function ProfileCreateScreen() {
@@ -46,7 +47,7 @@ export default function ProfileCreateScreen() {
       birthTime: birthTime.trim() || undefined,
       birthLocation: birthLocation.trim() || undefined,
       notes: notes.trim() || undefined,
-      avatar: PROFILE_TYPES.find((t) => t.key === type)?.emoji,
+      avatar: PROFILE_TYPES.find((t) => t.key === type)?.icon,
       type,
       createdAt: new Date().toISOString(),
     };
@@ -151,7 +152,7 @@ export default function ProfileCreateScreen() {
                   },
                 ]}
               >
-                <Text style={styles.typeEmoji}>{pt.emoji}</Text>
+                <CosmicIcon name={pt.icon} size={20} color={type === pt.key ? theme.accent : theme.textSecondary} />
                 <Text
                   style={[
                     styles.typeLabel,
@@ -238,7 +239,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 10,
   },
-  typeEmoji: { fontSize: 18 },
+
   typeLabel: { fontSize: 14 },
   saveBtn: {
     marginTop: Spacing.two,

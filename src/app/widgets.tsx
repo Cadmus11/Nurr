@@ -10,6 +10,7 @@ import { getDailyMessage, calculateEnergyScore, generateForecast } from '@/utils
 import { getMoonPhase } from '@/utils/calculations/lunarPhase';
 import { MOON_PHASES } from '@/constants/cosmic/moonPhases';
 import { findAngelNumber } from '@/constants/cosmic/angelNumbers';
+import { CosmicIcon } from '@/components/cosmic-icon';
 import type { MoonPhase } from '@/types/cosmic';
 
 const PHASE_SYMBOLS: Record<MoonPhase, string> = {
@@ -118,7 +119,7 @@ export default function WidgetsScreen() {
             onPress={readWidgets}
             style={({ pressed }) => [styles.speakBtn, { backgroundColor: isSpeaking ? theme.accent + '30' : theme.card, borderColor: theme.cardBorder, opacity: pressed ? 0.7 : 1 }]}
           >
-            <Text style={[styles.speakIcon, { color: theme.accent }]}>{isSpeaking ? '⏹' : '🔊'}</Text>
+            <CosmicIcon name={isSpeaking ? 'StopCircle' : 'VolumeHigh'} size={22} color={theme.accent} />
           </Pressable>
         </View>
 
@@ -137,7 +138,7 @@ export default function WidgetsScreen() {
                   <Text style={[styles.energyBarLabel, { color: theme.textSecondary }]}>{capitalize(cat)}</Text>
                   <Text style={[styles.energyBarValue, { color: getLevelColor(energy?.[cat] ?? 'moderate', theme) }]}>{getLevelLabel(energy?.[cat] ?? 'moderate')}</Text>
                 </View>
-                <View style={[styles.energyBarTrack, { backgroundColor: theme.border }]}>
+                <View style={[styles.energyBarTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
                   <View style={[styles.energyBarFill, { backgroundColor: getLevelColor(energy?.[cat] ?? 'moderate', theme), width: `${getLevelValue(energy?.[cat] ?? 'moderate') * 100}%` as any }]} />
                 </View>
               </View>
@@ -154,20 +155,20 @@ export default function WidgetsScreen() {
           </View>
 
           <View style={[styles.widgetCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-            <Text style={styles.widgetEmoji}>✧</Text>
+            <CosmicIcon name="Star1" size={28} color={theme.accent} />
             <Text style={[styles.widgetLabel, { color: theme.textSecondary }]}>Angel Number</Text>
             <Text style={[styles.widgetValue, { color: theme.accent }]}>{angel?.number ?? '—'}</Text>
             <Text style={[styles.widgetSub, { color: theme.textTertiary }]} numberOfLines={2}>{angel?.meaning ?? ''}</Text>
           </View>
 
           <View style={[styles.widgetCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-            <Text style={styles.widgetEmoji}>💼</Text>
+            <CosmicIcon name="TrendUp" size={28} color={theme.accentOrange} />
             <Text style={[styles.widgetLabel, { color: theme.textSecondary }]}>Career Forecast</Text>
             <Text style={[styles.widgetValueSm, { color: theme.text }]} numberOfLines={2}>{forecast?.career ?? ''}</Text>
           </View>
 
           <View style={[styles.widgetCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
-            <Text style={styles.widgetEmoji}>❤</Text>
+            <CosmicIcon name="Heart" size={28} color={theme.accent} />
             <Text style={[styles.widgetLabel, { color: theme.textSecondary }]}>Love Forecast</Text>
             <Text style={[styles.widgetValueSm, { color: theme.text }]} numberOfLines={2}>{forecast?.love ?? ''}</Text>
           </View>
@@ -220,8 +221,8 @@ const styles = StyleSheet.create({
   energyBarLabelRow: { flexDirection: 'row', justifyContent: 'space-between' },
   energyBarLabel: { fontSize: 13, fontWeight: '500' },
   energyBarValue: { fontSize: 12, fontWeight: '700' },
-  energyBarTrack: { height: 6, borderRadius: 3 },
-  energyBarFill: { height: 6, borderRadius: 3 },
+  energyBarTrack: { height: 10, borderRadius: 5, borderWidth: 0.5 },
+  energyBarFill: { height: 10, borderRadius: 5 },
   widgetGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   widgetCard: { width: '47.5%', borderRadius: 14, borderWidth: 1, padding: Spacing.three, gap: 6 },
   widgetEmoji: { fontSize: 28 },
