@@ -41,6 +41,14 @@ function getLevelLabel(level: 'high' | 'moderate' | 'low'): string {
   }
 }
 
+function getLevelValue(level: 'high' | 'moderate' | 'low'): number {
+  switch (level) {
+    case 'high': return 0.85;
+    case 'moderate': return 0.55;
+    case 'low': return 0.25;
+  }
+}
+
 export default function ForecastScreen() {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
@@ -105,16 +113,23 @@ export default function ForecastScreen() {
 
             <View style={[styles.energyCard, { backgroundColor: theme.card, borderColor: theme.cardBorder }]}>
               <Text style={[styles.energyLabel, { color: theme.textSecondary }]}>Today&apos;s Energy</Text>
-              <Text style={[styles.energyScore, { color: theme.accent }]}>{data.energy.overall}</Text>
-              <Text style={[styles.energyMax, { color: theme.textSecondary }]}>/100</Text>
-              <View style={styles.energyDetail}>
-                {(['career', 'love', 'finance', 'health', 'spiritual'] as const).map((cat) => (
-                  <View key={cat} style={styles.energyItem}>
-                    <Text style={[styles.energyItemIcon, { color: theme.textSecondary }]}>{CATEGORY_ICONS[cat]}</Text>
-                    <Text style={[styles.energyItemLabel, { color: theme.textSecondary }]}>{capitalize(cat)}</Text>
-                    <Text style={[styles.energyItemValue, { color: getLevelColor(data.energy[cat], theme) }]}>{getLevelLabel(data.energy[cat])}</Text>
-                  </View>
-                ))}
+              <View style={styles.energyRow}>
+                <Text style={[styles.energyScore, { color: theme.accent }]}>{data.energy.overall}</Text>
+                <Text style={[styles.energyMax, { color: theme.textSecondary }]}>/100</Text>
+              </View>
+              <View style={styles.energyBars}>
+                {(['career', 'love', 'finance', 'health', 'spiritual'] as const).map((cat) => {
+                  const color = getLevelColor(data.energy[cat], theme);
+                  const pct = getLevelValue(data.energy[cat]) * 100;
+                  return (
+                    <View key={cat} style={styles.energyBarWrap}>
+                      <View style={[styles.energyBar, { backgroundColor: color + '20' }]}>
+                        <View style={[styles.energyBarFill, { backgroundColor: color, width: `${pct}%` as any }]} />
+                        <Text style={styles.energyBarLabel}>{capitalize(cat)}</Text>
+                      </View>
+                    </View>
+                  );
+                })}
               </View>
             </View>
 
@@ -206,15 +221,33 @@ const styles = StyleSheet.create({
   affirmation: { fontSize: 17, fontWeight: '600', lineHeight: 24, fontStyle: 'italic' },
   mantra: { fontSize: 14, fontWeight: '700', textAlign: 'center', paddingVertical: 6 },
   focus: { fontSize: 13, fontWeight: '500', lineHeight: 18 },
-  energyCard: { borderRadius: 20, borderWidth: 1, padding: Spacing.four, alignItems: 'center', gap: 4 },
+  energyCard: { borderRadius: 20, borderWidth: 1, padding: Spacing.four, gap: 4 },
   energyLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
+  energyRow: { flexDirection: 'row', alignItems: 'baseline' },
   energyScore: { fontSize: 56, fontWeight: '900' },
-  energyMax: { fontSize: 20, fontWeight: '600', marginTop: -8 },
-  energyDetail: { flexDirection: 'row', gap: 16, marginTop: 12, flexWrap: 'wrap', justifyContent: 'center' },
-  energyItem: { alignItems: 'center', gap: 2, minWidth: 60 },
-  energyItemIcon: { fontSize: 18 },
-  energyItemLabel: { fontSize: 10, fontWeight: '600', textTransform: 'uppercase' },
-  energyItemValue: { fontSize: 12, fontWeight: '800' },
+  energyMax: { fontSize: 20, fontWeight: '600', marginLeft: 4 },
+  energyBars: { gap: 10, marginTop: 8 },
+  energyBarWrap: { height: 32 },
+  energyBar: {
+    flex: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    justifyContent: 'center',
+  },
+  energyBarFill: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    borderRadius: 8,
+  },
+  energyBarLabel: {
+    paddingHorizontal: 14,
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#ffffff',
+    zIndex: 1,
+  },
   statLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
   statRow: { fontSize: 15, fontWeight: '500' },
   readingRow: { flexDirection: 'row', gap: 10, alignItems: 'flex-start' },

@@ -4,15 +4,16 @@ import { router } from 'expo-router';
 import { useTheme } from '@/hooks/use-theme';
 import { useProfileStore } from '@/stores/profile-store';
 import { Spacing } from '@/constants/theme';
+import { CosmicIcon, type CosmicIconName } from '@/components/cosmic-icon';
 import type { Profile } from '@/types/cosmic';
 
-const TYPE_EMOJIS: Record<string, string> = {
-  self: '🧑',
-  partner: '💑',
-  friend: '🤝',
-  child: '👶',
-  family: '👨‍👩‍👧‍👦',
-  client: '💼',
+const TYPE_ICONS: Record<string, CosmicIconName> = {
+  self: 'Profile',
+  partner: 'Heart',
+  friend: 'Profile2User',
+  child: 'UserOctagon',
+  family: 'Home2',
+  client: 'Briefcase',
 };
 
 export default function ProfilesScreen() {
@@ -92,11 +93,17 @@ function ProfileCard({
         },
       ]}
     >
-      <Text style={styles.avatar}>{profile.avatar ?? TYPE_EMOJIS[profile.type] ?? '🧑'}</Text>
+      <View style={styles.avatar}>
+        <CosmicIcon
+          name={(profile.avatar as CosmicIconName) ?? TYPE_ICONS[profile.type]}
+          size={28}
+          color={theme.accent}
+        />
+      </View>
       <View style={styles.profileInfo}>
         <Text style={[styles.profileName, { color: theme.text }]}>{profile.name}</Text>
         <Text style={[styles.profileMeta, { color: theme.textSecondary }]}>
-          {profile.birthDate} · {profile.type}
+          {profile.birthDate}
         </Text>
       </View>
       {isActive && (
@@ -142,7 +149,14 @@ const styles = StyleSheet.create({
     padding: Spacing.three,
     gap: 12,
   },
-  avatar: { fontSize: 32 },
+  avatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(180, 130, 255, 0.12)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   profileInfo: { flex: 1 },
   profileName: { fontSize: 16, fontWeight: '700' },
   profileMeta: { fontSize: 13, marginTop: 2 },

@@ -129,11 +129,15 @@ export default function CompatibilityScreen() {
                   <Text style={[styles.overallScore, {
                     color: result.average >= 75 ? theme.accentGreen : result.average >= 55 ? theme.accentOrange : theme.accent,
                   }]}>{result.average}%</Text>
-                  <View style={[styles.overallTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
-                    <View style={[styles.overallFill, {
-                      backgroundColor: result.average >= 75 ? theme.accentGreen : result.average >= 55 ? theme.accentOrange : theme.accent,
-                      width: `${result.average}%` as any,
-                    }]} />
+                  <View style={styles.overallBarWrap}>
+                    <View style={[styles.overallBar, {
+                      backgroundColor: (result.average >= 75 ? theme.accentGreen : result.average >= 55 ? theme.accentOrange : theme.accent) + '20',
+                    }]}>
+                      <View style={[styles.overallBarFill, {
+                        backgroundColor: result.average >= 75 ? theme.accentGreen : result.average >= 55 ? theme.accentOrange : theme.accent,
+                        width: `${result.average}%` as any,
+                      }]} />
+                    </View>
                   </View>
                 </View>
 
@@ -141,18 +145,18 @@ export default function CompatibilityScreen() {
                   <Text style={[styles.statLabel, { color: theme.textSecondary }]}>Category Scores</Text>
                   {SCORE_LABELS.map(({ key, label, icon }) => {
                     const score = result.scores[key];
+                    const sc = score >= 75 ? theme.accentGreen : score >= 55 ? theme.accentOrange : theme.accent;
                     return (
                       <View key={key} style={styles.scoreRow}>
                         <View style={styles.scoreLabelRow}>
                           <CosmicIcon name={icon} size={16} color={theme.accent} />
                           <Text style={[styles.scoreLabel, { color: theme.text }]}>{label}</Text>
-                          <Text style={[styles.scoreValue, { color: theme.textSecondary }]}>{score}%</Text>
+                          <Text style={[styles.scoreValue, { color: sc }]}>{score}%</Text>
                         </View>
-                        <View style={[styles.scoreTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
-                          <View style={[styles.scoreFill, {
-                            backgroundColor: score >= 75 ? theme.accentGreen : score >= 55 ? theme.accentOrange : theme.accent,
-                            width: `${score}%` as any,
-                          }]} />
+                        <View style={styles.scoreBarWrap}>
+                          <View style={[styles.scoreBar, { backgroundColor: sc + '20' }]}>
+                            <View style={[styles.scoreBarFill, { backgroundColor: sc, width: `${score}%` as any }]} />
+                          </View>
                         </View>
                       </View>
                     );
@@ -234,15 +238,39 @@ const styles = StyleSheet.create({
   overallCard: { borderRadius: 20, borderWidth: 1, padding: Spacing.four, alignItems: 'center', gap: 8 },
   overallLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
   overallScore: { fontSize: 56, fontWeight: '900' },
-  overallTrack: { width: '100%', height: 10, borderRadius: 5, borderWidth: 0.5 },
-  overallFill: { height: 10, borderRadius: 5 },
+  overallBarWrap: { width: '100%', height: 32 },
+  overallBar: {
+    flex: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    justifyContent: 'center',
+  },
+  overallBarFill: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    borderRadius: 8,
+  },
   statLabel: { fontSize: 12, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 0.5 },
 
   scoreLabel: { fontSize: 13, fontWeight: '600' },
   scoreRow: { gap: 4 },
   scoreLabelRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  scoreTrack: { height: 10, borderRadius: 5, borderWidth: 0.5 },
-  scoreFill: { height: 10, borderRadius: 5 },
+  scoreBarWrap: { height: 28 },
+  scoreBar: {
+    flex: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    justifyContent: 'center',
+  },
+  scoreBarFill: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    borderRadius: 8,
+  },
   scoreValue: { fontSize: 13, fontWeight: '700' },
   bulletText: { fontSize: 14, lineHeight: 22 },
 });

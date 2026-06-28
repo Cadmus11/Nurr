@@ -163,17 +163,21 @@ export default function AnalyticsScreen() {
               <Text style={[styles.sectionTitle, { color: theme.text }]}>Strengths vs Weaknesses</Text>
               <View style={styles.barRow}>
                 <View style={{ flex: 1 }}>
-                  <Text style={[styles.barLabel, { color: theme.accentGreen }]}>Strengths</Text>
-                    <View style={[styles.barTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
-                    <View style={[styles.barFill, { backgroundColor: theme.accentGreen, width: '70%' as any }]} />
+                  <View style={styles.barWrap}>
+                    <View style={[styles.bar, { backgroundColor: theme.accentGreen + '20' }]}>
+                      <View style={[styles.barFill, { backgroundColor: theme.accentGreen, width: '70%' as any }]} />
+                      <Text style={styles.barLabel}>Strengths</Text>
+                    </View>
                   </View>
                 </View>
               </View>
               <View style={styles.barRow}>
                 <View style={{ flex: 1 }}>
-                  <Text style={[styles.barLabel, { color: theme.accentOrange }]}>Weaknesses</Text>
-                  <View style={[styles.barTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
-                    <View style={[styles.barFill, { backgroundColor: theme.accentOrange, width: '30%' as any }]} />
+                  <View style={styles.barWrap}>
+                    <View style={[styles.bar, { backgroundColor: theme.accentOrange + '20' }]}>
+                      <View style={[styles.barFill, { backgroundColor: theme.accentOrange, width: '30%' as any }]} />
+                      <Text style={styles.barLabel}>Weaknesses</Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -196,12 +200,17 @@ export default function AnalyticsScreen() {
               <View style={styles.numGrid}>
                 {numerologyData.map((item, i) => {
                   const pct = Math.min(100, (item.value / 9) * 100);
+                  const c = NUMEROLOGY_COLORS[i % NUMEROLOGY_COLORS.length];
                   return (
-                    <View key={item.label} style={styles.numItem}>
-                      <Text style={[styles.numLabel, { color: theme.textSecondary }]}>{item.label}</Text>
-                      <Text style={[styles.numValue, { color: NUMEROLOGY_COLORS[i % NUMEROLOGY_COLORS.length] }]}>{item.value}</Text>
-                      <View style={[styles.numBarTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
-                        <View style={[styles.numBarFill, { backgroundColor: NUMEROLOGY_COLORS[i % NUMEROLOGY_COLORS.length], width: `${pct}%` as any }]} />
+                    <View key={item.label}>
+                      <View style={styles.numLabelRow}>
+                        <Text style={[styles.numLabel, { color: theme.textSecondary }]}>{item.label}</Text>
+                        <Text style={[styles.numValue, { color: c }]}>{item.value}</Text>
+                      </View>
+                      <View style={styles.numBarWrap}>
+                        <View style={[styles.numBar, { backgroundColor: c + '20' }]}>
+                          <View style={[styles.numBarFill, { backgroundColor: c, width: `${pct}%` as any }]} />
+                        </View>
                       </View>
                     </View>
                   );
@@ -242,10 +251,12 @@ export default function AnalyticsScreen() {
                     <View style={styles.elementLabelRow}>
                       <View style={[styles.elementDot, { backgroundColor: ELEMENT_COLORS[el.name] }]} />
                       <Text style={[styles.elementLabel, { color: theme.text, fontWeight: el.isDominant ? '800' : '500' }]}>{capitalize(el.name)}</Text>
-                      <Text style={[styles.elementScore, { color: el.isDominant ? theme.accent : theme.textSecondary }]}>{el.score}%</Text>
+                      <Text style={[styles.elementScore, { color: ELEMENT_COLORS[el.name] }]}>{el.score}%</Text>
                     </View>
-                    <View style={[styles.elementBarTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
-                      <View style={[styles.elementBarFill, { backgroundColor: ELEMENT_COLORS[el.name], width: `${el.score}%` as any }]} />
+                    <View style={styles.elementBarWrap}>
+                      <View style={[styles.elementBar, { backgroundColor: ELEMENT_COLORS[el.name] + '20' }]}>
+                        <View style={[styles.elementBarFill, { backgroundColor: ELEMENT_COLORS[el.name], width: `${el.score}%` as any }]} />
+                      </View>
                     </View>
                     {el.isDominant && <Text style={[styles.dominantBadge, { color: theme.accent }]}>★ Dominant Element</Text>}
                   </View>
@@ -313,16 +324,46 @@ const styles = StyleSheet.create({
   traitPill: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20 },
   traitText: { fontSize: 13, fontWeight: '600' },
   barRow: { gap: 4 },
-  barLabel: { fontSize: 12, fontWeight: '600' },
-  barTrack: { height: 10, borderRadius: 5, borderWidth: 0.5 },
-  barFill: { height: 10, borderRadius: 5 },
+  barWrap: { height: 32 },
+  bar: {
+    flex: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    justifyContent: 'center',
+  },
+  barFill: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    borderRadius: 8,
+  },
+  barLabel: {
+    paddingHorizontal: 14,
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#ffffff',
+    zIndex: 1,
+  },
   bulletItem: { fontSize: 13, lineHeight: 20 },
-  numGrid: { gap: 16 },
-  numItem: { gap: 4 },
+  numGrid: { gap: 14 },
+  numLabelRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
   numLabel: { fontSize: 12, fontWeight: '600' },
   numValue: { fontSize: 24, fontWeight: '800' },
-  numBarTrack: { height: 10, borderRadius: 5, borderWidth: 0.5 },
-  numBarFill: { height: 10, borderRadius: 5 },
+  numBarWrap: { height: 28 },
+  numBar: {
+    flex: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    justifyContent: 'center',
+  },
+  numBarFill: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    borderRadius: 8,
+  },
   distGrid: { flexDirection: 'row', justifyContent: 'space-between', height: 120, marginTop: 8 },
   distItem: { alignItems: 'center', gap: 4, flex: 1 },
   distNum: { fontSize: 13, fontWeight: '700' },
@@ -333,8 +374,20 @@ const styles = StyleSheet.create({
   elementDot: { width: 10, height: 10, borderRadius: 5 },
   elementLabel: { fontSize: 14, flex: 1 },
   elementScore: { fontSize: 14, fontWeight: '700' },
-  elementBarTrack: { height: 10, borderRadius: 5, borderWidth: 0.5 },
-  elementBarFill: { height: 10, borderRadius: 5 },
+  elementBarWrap: { height: 28 },
+  elementBar: {
+    flex: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    justifyContent: 'center',
+  },
+  elementBarFill: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    borderRadius: 8,
+  },
   dominantBadge: { fontSize: 12, fontWeight: '700', marginTop: 2 },
   elementBreakdown: { gap: 10 },
   balanceItem: { borderRadius: 12, padding: Spacing.three, gap: 6 },

@@ -132,17 +132,19 @@ export default function WidgetsScreen() {
             <Text style={[styles.energyMax, { color: theme.textSecondary }]}>/100</Text>
           </View>
           <View style={styles.energyBars}>
-            {(['career', 'love', 'finance', 'health', 'spiritual'] as const).map((cat) => (
-              <View key={cat} style={styles.energyBarItem}>
-                <View style={styles.energyBarLabelRow}>
-                  <Text style={[styles.energyBarLabel, { color: theme.textSecondary }]}>{capitalize(cat)}</Text>
-                  <Text style={[styles.energyBarValue, { color: getLevelColor(energy?.[cat] ?? 'moderate', theme) }]}>{getLevelLabel(energy?.[cat] ?? 'moderate')}</Text>
+            {(['career', 'love', 'finance', 'health', 'spiritual'] as const).map((cat) => {
+              const level = energy?.[cat] ?? 'moderate';
+              const color = getLevelColor(level, theme);
+              const pct = getLevelValue(level) * 100;
+              return (
+                <View key={cat} style={styles.energyBarWrap}>
+                  <View style={[styles.energyBar, { backgroundColor: color + '20' }]}>
+                    <View style={[styles.energyBarFill, { backgroundColor: color, width: `${pct}%` as any }]} />
+                    <Text style={styles.energyBarLabel}>{capitalize(cat)}</Text>
+                  </View>
                 </View>
-                <View style={[styles.energyBarTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>
-                  <View style={[styles.energyBarFill, { backgroundColor: getLevelColor(energy?.[cat] ?? 'moderate', theme), width: `${getLevelValue(energy?.[cat] ?? 'moderate') * 100}%` as any }]} />
-                </View>
-              </View>
-            ))}
+              );
+            })}
           </View>
         </View>
 
@@ -217,12 +219,27 @@ const styles = StyleSheet.create({
   energyScore: { fontSize: 48, fontWeight: '800' },
   energyMax: { fontSize: 20, fontWeight: '600', marginLeft: 4 },
   energyBars: { gap: 10 },
-  energyBarItem: { gap: 4 },
-  energyBarLabelRow: { flexDirection: 'row', justifyContent: 'space-between' },
-  energyBarLabel: { fontSize: 13, fontWeight: '500' },
-  energyBarValue: { fontSize: 12, fontWeight: '700' },
-  energyBarTrack: { height: 10, borderRadius: 5, borderWidth: 0.5 },
-  energyBarFill: { height: 10, borderRadius: 5 },
+  energyBarWrap: { height: 32 },
+  energyBar: {
+    flex: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    justifyContent: 'center',
+  },
+  energyBarFill: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    borderRadius: 8,
+  },
+  energyBarLabel: {
+    paddingHorizontal: 14,
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#ffffff',
+    zIndex: 1,
+  },
   widgetGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   widgetCard: { width: '47.5%', borderRadius: 14, borderWidth: 1, padding: Spacing.three, gap: 6 },
   widgetEmoji: { fontSize: 28 },

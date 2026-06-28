@@ -105,24 +105,18 @@ export default function HomeScreen() {
             <Text style={[styles.energyMax, { color: theme.textSecondary }]}>/100</Text>
           </View>
           <View style={styles.energyBars}>
-            {(['career', 'love', 'finance', 'health', 'spiritual'] as const).map((cat) => (
-              <View key={cat} style={styles.energyBarItem}>
-                <Text style={[styles.energyBarLabel, { color: theme.textSecondary }]}>
-                  {capitalize(cat)}
-                </Text>
-                  <View style={[styles.energyBarTrack, { backgroundColor: theme.border, borderColor: theme.border }]}>  
-                    <View
-                      style={[
-                        styles.energyBarFill,
-                      {
-                        backgroundColor: getLevelColor(energy[cat]),
-                        width: `${getLevelValue(energy[cat]) * 100}%` as any,
-                      },
-                    ]}
-                  />
+            {(['career', 'love', 'finance', 'health', 'spiritual'] as const).map((cat) => {
+              const color = getLevelColor(energy[cat]);
+              const pct = getLevelValue(energy[cat]) * 100;
+              return (
+                <View key={cat} style={styles.energyBarWrap}>
+                  <View style={[styles.energyBar, { backgroundColor: color + '20' }]}>
+                    <View style={[styles.energyBarFill, { backgroundColor: color, width: `${pct}%` as any }]} />
+                    <Text style={styles.energyBarLabel}>{capitalize(cat)}</Text>
+                  </View>
                 </View>
-              </View>
-            ))}
+              );
+            })}
           </View>
         </View>
       )}
@@ -291,23 +285,30 @@ const styles = StyleSheet.create({
   },
   energyBars: {
     marginTop: Spacing.three,
-    gap: 12,
+    gap: 10,
   },
-  energyBarItem: {
-    gap: 4,
+  energyBarWrap: {
+    height: 32,
   },
-  energyBarLabel: {
-    fontSize: 13,
-    fontWeight: '500',
-  },
-  energyBarTrack: {
-    height: 10,
-    borderRadius: 5,
-    borderWidth: 0.5,
+  energyBar: {
+    flex: 1,
+    borderRadius: 8,
+    overflow: 'hidden',
+    justifyContent: 'center',
   },
   energyBarFill: {
-    height: 10,
-    borderRadius: 5,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    borderRadius: 8,
+  },
+  energyBarLabel: {
+    paddingHorizontal: 14,
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#ffffff',
+    zIndex: 1,
   },
   sectionTitle: {
     fontSize: 20,
