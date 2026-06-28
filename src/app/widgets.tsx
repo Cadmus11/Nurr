@@ -34,14 +34,6 @@ function getLevelValue(level: 'high' | 'moderate' | 'low'): number {
   }
 }
 
-function getLevelLabel(level: 'high' | 'moderate' | 'low'): string {
-  switch (level) {
-    case 'high': return 'Strong';
-    case 'moderate': return 'Moderate';
-    case 'low': return 'Low';
-  }
-}
-
 export default function WidgetsScreen() {
   const insets = useSafeAreaInsets();
   const theme = useTheme();

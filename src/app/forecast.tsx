@@ -33,14 +33,6 @@ function getLevelColor(level: 'high' | 'moderate' | 'low', theme: any): string {
   }
 }
 
-function getLevelLabel(level: 'high' | 'moderate' | 'low'): string {
-  switch (level) {
-    case 'high': return 'Strong';
-    case 'moderate': return 'Moderate';
-    case 'low': return 'Low';
-  }
-}
-
 function getLevelValue(level: 'high' | 'moderate' | 'low'): number {
   switch (level) {
     case 'high': return 0.85;
