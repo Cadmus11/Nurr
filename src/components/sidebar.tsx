@@ -51,6 +51,7 @@ const NAV_ITEMS: NavItem[] = [
   { module: 'moon-calendar', label: 'Moon Calendar', icon: 'Calendar1', route: '/moon-calendar' },
   { module: 'journal', label: 'Journal', icon: 'Book1', route: '/journal' },
   { module: 'settings', label: 'Settings', icon: 'Setting2', route: '/settings' },
+  { module: 'brands', label: 'Brands', icon: 'Element2', route: '/brands' },
   { module: 'search', label: 'Search', icon: 'SearchNormal1', route: '/search' },
 ];
 

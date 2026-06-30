@@ -449,6 +449,53 @@ export interface LifeCycle {
   };
 }
 
+// --- Brands ---
+export type BrandCategory =
+  | "technology"
+  | "automotive"
+  | "fashion"
+  | "food-beverage"
+  | "beauty"
+  | "luxury"
+  | "entertainment"
+  | "sports"
+  | "finance"
+  | "travel-hospitality"
+  | "retail"
+  | "health-fitness";
+
+export interface BrandNumerology {
+  brandNumber: number;
+  expression: string;
+  strengths: string[];
+  challenges: string[];
+}
+
+export interface BrandAstrology {
+  zodiacSign: ZodiacSign;
+  rulingPlanet: PlanetName;
+  element: ZodiacElement;
+  compatibleSigns: ZodiacSign[];
+}
+
+export interface Brand {
+  id: string;
+  name: string;
+  slug: string;
+  category: BrandCategory;
+  description: string;
+  tagline: string;
+  logo: string;
+  foundedYear: number;
+  founder: string;
+  numerology: BrandNumerology;
+  astrology: BrandAstrology;
+  keywords: string[];
+  luckyColors: string[];
+  luckyNumbers: number[];
+  energy: string;
+}
+
 // --- App Settings ---
 export interface AppSettings {
   theme: CosmicTheme;
@@ -496,4 +543,5 @@ export type CosmicModule =
   | "reports"
   | "desktop-widgets"
   | "widgets"
-  | "analytics";
+  | "analytics"
+  | "brands";

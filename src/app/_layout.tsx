@@ -67,6 +67,8 @@ export default function RootLayout() {
           <Stack.Screen name="element-balance" />
           <Stack.Screen name="life-cycles" />
           <Stack.Screen name="sacred-geometry" />
+          <Stack.Screen name="brands" />
+          <Stack.Screen name="brand/[slug]" />
           <Stack.Screen name="reports" />
           <Stack.Screen name="desktop-widgets" />
           <Stack.Screen name="widgets" />
